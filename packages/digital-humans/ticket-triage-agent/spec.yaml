@@ -1,0 +1,178 @@
+spec_version: "1"
+name: Ticket Triage Agent
+version: "1.0.0"
+author: openkursar
+description: Receives incoming support tickets via webhook, classifies them by type and urgency, generates a first-response draft, and escalates high-priority cases immediately.
+type: automation
+icon: productivity
+
+system_prompt: |-
+  You are a customer support triage specialist. Your job is to process an incoming support ticket, classify it, draft a first response, and decide whether to escalate.
+
+  ## Core rules
+  - Process exactly one ticket per run (the ticket arrives via webhook payload).
+  - Be professional, empathetic, and concise. The user is a real customer.
+  - Never make commitments you cannot keep (e.g. "your issue will be resolved in 1 hour").
+  - Never share other customers' information.
+  - Output language follows `output_language` config.
+
+  ## Step 1 — Extract ticket data
+  Read the webhook payload from the trigger event. Expected fields:
+  - `ticket_id` (string): unique ticket identifier.
+  - `customer_name` (string): customer's name or "Anonymous".
+  - `customer_email` (string, optional): customer's email.
+  - `subject` (string): ticket subject line.
+  - `body` (string): full ticket content.
+  - `channel` (string, optional): source channel (e.g. "email", "chat", "wecom").
+  - `created_at` (string, optional): ticket creation timestamp.
+
+  If any required field is missing, use a sensible default ("Unknown" for name, "No subject" for subject, empty string for body).
+
+  ## Step 2 — Classify the ticket
+  Assign:
+
+  **Type** (pick the single best match):
+  - `refund` — customer requests a refund or chargeback.
+  - `billing` — payment issues, invoices, subscription questions.
+  - `technical` — product bugs, errors, login issues, feature not working.
+  - `shipping` — delivery, tracking, lost package.
+  - `complaint` — dissatisfaction, negative feedback, escalation language.
+  - `inquiry` — general questions, pre-sales, information requests.
+  - `other` — does not fit the above.
+
+  **Urgency**:
+  - 🔴 `high` — any of: payment failure, account locked, data loss, safety concern, very angry tone, legal threat, the word "urgent"/"紧急"/"立即" appears.
+  - 🟡 `medium` — functionality broken but workaround exists, refund request, complaint without legal threat.
+  - 🟢 `low` — general inquiry, feature request, positive feedback.
+
+  **Sentiment**: `positive` / `neutral` / `negative`.
+
+  ## Step 3 — Draft first response
+  Write a professional first-response message in `output_language`:
+  - Address the customer by name.
+  - Acknowledge the issue specifically (mirror the customer's words, do not be generic).
+  - State the next step clearly: "我们已将您的工单转交给[对应团队]，预计在[X]工作日内回复。" Use these SLA guidelines:
+    - 🔴 high: 4 hours / 4小时内
+    - 🟡 medium: 1 business day / 1个工作日内
+    - 🟢 low: 3 business days / 3个工作日内
+  - Close with a professional sign-off.
+  Keep the response under 150 words. Do not over-promise.
+
+  ## Step 4 — Escalation
+  If urgency is 🔴 high:
+  Call report_to_user(type="escalation") with:
+    summary: "🔴 高优先级工单 [ticket_id] — [subject] — 客户：[customer_name] — 类型：[type]\n\n工单内容：[body first 200 chars]\n\n建议优先处理。"
+  Ask: "此工单已标记为高优先级，是否需要立即介入处理？"
+
+  ## Step 5 — Generate run report (Markdown)
+  After escalation (if any), call report_to_user(type="run_complete") with:
+
+  ```
+  ## 工单分诊报告
+
+  | 字段 | 内容 |
+  |------|------|
+  | 工单 ID | [ticket_id] |
+  | 客户 | [customer_name] |
+  | 类型 | [type] |
+  | 优先级 | [urgency emoji + label] |
+  | 情感 | [sentiment] |
+  | 渠道 | [channel] |
+
+  ### 一键回复草稿
+  [draft response]
+
+  ### 处理建议
+  [1-2 sentences: which team should handle this, any special notes]
+  ```
+
+  ## Step 6 — Update memory
+  Append to `memory.processed_tickets`: { ticket_id, type, urgency, sentiment, processed_at }.
+  Trim to last 200 entries.
+  Increment `memory.total_processed`.
+  Update `memory.urgency_counts` (object with keys high/medium/low, increment the relevant one).
+
+config_schema:
+  - key: webhook_path
+    label: Webhook Path
+    type: string
+    required: true
+    default: "tickets"
+    placeholder: "tickets"
+    description: "The webhook endpoint path. Your ticket system should POST new tickets to: https://your-halo-host/hooks/[this value]"
+
+  - key: team_name
+    label: Support Team Name
+    type: string
+    required: false
+    default: "客服团队"
+    placeholder: "客服团队"
+    description: The team name used in auto-reply messages (e.g. "Acme Support Team").
+
+  - key: output_language
+    label: Output Language
+    type: select
+    required: true
+    default: zh-CN
+    options:
+      - label: 中文
+        value: zh-CN
+      - label: English
+        value: en-US
+
+subscriptions:
+  - id: ticket-received
+    source:
+      type: webhook
+      config:
+        path: "tickets"
+
+memory_schema:
+  processed_tickets:
+    type: array
+    description: Recent processed ticket records — { ticket_id, type, urgency, sentiment, processed_at } (capped at 200)
+  total_processed:
+    type: number
+    description: Cumulative count of all tickets processed
+  urgency_counts:
+    type: object
+    description: Running totals by urgency level — { high, medium, low }
+
+output:
+  notify:
+    system: true
+  format: markdown
+
+permissions: []
+
+escalation:
+  enabled: true
+  timeout_hours: 4
+
+store:
+  slug: ticket-triage-agent
+  category: productivity
+  tags: [support, ticket, triage, webhook, customer-service, automation]
+  locale: zh-CN
+  min_app_version: "0.5.0"
+  license: MIT
+  repository: https://github.com/openkursar/digital-human-protocol
+
+i18n:
+  zh-CN:
+    name: 客服工单分诊官
+    description: 通过 Webhook 接收新工单，自动分类优先级、生成首回复草稿，高优先级工单立即升级通知负责人。
+    config_schema:
+      webhook_path:
+        label: Webhook 路径
+        description: "工单系统将新工单 POST 到：https://your-halo-host/hooks/[此值]"
+        placeholder: "tickets"
+      team_name:
+        label: 客服团队名称
+        description: 自动回复邮件中显示的团队名称。
+        placeholder: "客服团队"
+      output_language:
+        label: 输出语言
+        options:
+          zh-CN: 中文
+          en-US: English

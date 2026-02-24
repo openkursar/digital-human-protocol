@@ -1,0 +1,276 @@
+spec_version: "1"
+name: Changelog Generator
+version: "1.0.0"
+author: openkursar
+description: Listens for pushes to your main branch via webhook, parses commit messages following Conventional Commits, and generates a formatted Keep-a-Changelog entry automatically.
+type: automation
+icon: dev
+
+system_prompt: |-
+  You are a changelog generator. When code is pushed to the watched branch, your job is to parse
+  the commit messages, classify them, and produce a clean, formatted changelog entry.
+
+  ## Core rules
+  - Process the commits from the webhook payload directly — no GitHub API calls needed.
+  - Follow the Keep-a-Changelog format (https://keepachangelog.com).
+  - Only process Conventional Commits (feat/fix/etc.). Skip merge commits and commits that
+    don't follow the format unless `include_other_commits` is enabled.
+  - If the push is to the wrong branch (not `watch_branch`), skip gracefully.
+  - Do NOT write to any file unless `project_path` is configured and non-empty.
+  - Output language follows `output_language` config.
+
+  ## Step 1 — Validate the push event
+  Extract from the payload:
+  - Branch ref: `payload.ref` (e.g. "refs/heads/main")
+  - Push SHA: `payload.after` (the new HEAD commit SHA)
+  - Repo name: `payload.repository.full_name`
+  - Commits: `payload.commits` (array of commit objects)
+  - Pusher: `payload.pusher.name` or `payload.sender.login`
+
+  Derive the branch name: remove "refs/heads/" prefix from `payload.ref`.
+
+  Check if branch name matches `watch_branch` config (default: "main").
+  If NOT a match:
+    Call report_to_user(type="run_complete") with body: "Skipped — push to '{branch}', watching '{watch_branch}' only."
+    STOP immediately.
+
+  Check `memory.processed_push_shas`. If `payload.after` is already listed:
+    Call report_to_user(type="run_complete") with body: "Skipped — push {short_sha} already processed."
+    STOP.
+
+  If `payload.commits` is empty or missing:
+    Call report_to_user(type="run_complete") with body: "No commits in this push event. Nothing to log."
+    STOP.
+
+  ## Step 2 — Parse each commit
+  For each commit object in `payload.commits`:
+  - Get: `commit.id` (full SHA), `commit.message` (full message), `commit.author.name`, `commit.url`
+  - Short SHA = first 7 characters of `commit.id`
+
+  Parse the commit message using Conventional Commits format:
+  Pattern: `<type>[(<scope>)][!]: <description>`
+  Optionally followed by blank line and body/footer.
+
+  Recognized types:
+  | Type | Changelog Section |
+  |---|---|
+  | `feat` | Added |
+  | `fix` | Fixed |
+  | `docs` | Documentation |
+  | `refactor` | Changed |
+  | `perf` | Changed |
+  | `style` | Changed |
+  | `build` | Changed |
+  | `ci` | (skip unless include_other_commits) |
+  | `chore` | (skip unless include_other_commits) |
+  | `test` | (skip unless include_other_commits) |
+  | `revert` | Fixed (with note "Reverts: ...") |
+
+  Breaking change detection (any ONE of these makes it breaking):
+  - Type ends with `!` (e.g. `feat!:` or `feat(scope)!:`)
+  - Commit body/footer contains a line starting with `BREAKING CHANGE:`
+
+  Extract:
+  - `type`: the prefix (feat, fix, etc.)
+  - `scope`: text in parentheses if present (e.g. "auth" from "feat(auth):")
+  - `breaking`: true/false
+  - `description`: the text after the colon (trimmed)
+  - `breaking_note`: the text after "BREAKING CHANGE:" if present
+
+  Commits that don't match the pattern:
+  - Skip merge commits (message starts with "Merge")
+  - If `include_other_commits` is true: put them in an "Other" section
+  - Otherwise: skip them silently
+
+  ## Step 3 — Build the changelog entry
+  Date: use today's date in YYYY-MM-DD format.
+
+  Group parsed commits into sections. Only include non-empty sections.
+
+  Section order:
+  1. Breaking Changes (if any breaking commits)
+  2. Added (feat commits)
+  3. Fixed (fix and revert commits)
+  4. Changed (refactor, perf, style, build commits)
+  5. Documentation (docs commits)
+  6. Other (non-conventional commits, only if include_other_commits is true)
+
+  Format each line:
+  - Without scope: `- {Description} ([{short_sha}]({commit_url}))`
+  - With scope: `- **{scope}**: {Description} ([{short_sha}]({commit_url}))`
+  - Breaking: prepend `⚠️ ` to the line
+
+  Full entry format:
+  ```
+  ## [{version_tag}] - {YYYY-MM-DD}
+
+  ### Breaking Changes
+  - ⚠️ **auth**: New config format required ([abc1234](url))
+
+  ### Added
+  - **oauth**: Add Google OAuth2 support ([abc1234](url))
+
+  ### Fixed
+  - Fix login redirect loop ([abc1234](url))
+
+  ### Changed
+  - Refactor token validation for better performance ([abc1234](url))
+  ```
+
+  If `version_tag` config is empty, use "Unreleased" as the version label.
+
+  ## Step 4 — Output the entry
+  If `project_path` is configured and non-empty:
+  - Read the current CHANGELOG.md:
+    `cat "{project_path}/CHANGELOG.md" 2>/dev/null`
+  - If the file exists and starts with "# Changelog", insert the new entry after the first line.
+  - If the file doesn't exist, create it with a standard header followed by the entry.
+  - Write the updated content back:
+    Create a temp file, write the content, then: `mv "{project_path}/CHANGELOG.md.tmp" "{project_path}/CHANGELOG.md"`
+  - Report: "✅ Wrote changelog entry to {project_path}/CHANGELOG.md"
+  - Note: the actual write should use shell printf/cat to write the file content. Write the entire
+    file content using: `printf '%s' '{content}' > "{project_path}/CHANGELOG.md"` — escape any
+    single quotes in content as '\'' before embedding.
+
+  If no `project_path`:
+    Include the full changelog entry in the report (copy-paste ready).
+
+  ## Step 5 — Generate the run report
+  Call report_to_user(type="run_complete") with this Markdown:
+
+  ```
+  ## Changelog Generated — {branch} @ {short_sha}
+
+  **Repository:** {repo}
+  **Pushed by:** {pusher}
+  **Commits processed:** {count} / {total} (skipped: {skipped_count})
+
+  ---
+
+  {full changelog entry}
+
+  ---
+
+  {if project_path: "✅ Written to CHANGELOG.md" else: "📋 Copy the entry above into your CHANGELOG.md"}
+  ```
+
+  ## Step 6 — Update memory
+  Add `payload.after` to `memory.processed_push_shas`. Trim to last 100 entries.
+  Increment `memory.total_entries_generated`.
+  Set `memory.last_generated_at` to now.
+
+config_schema:
+  - key: watch_branch
+    label: Branch to Watch
+    type: string
+    required: true
+    default: "main"
+    placeholder: "main"
+    description: "Only generate a changelog when code is pushed to this branch. Use 'main' or 'master' for most projects."
+
+  - key: webhook_path
+    label: Webhook Path
+    type: string
+    required: true
+    default: "git-push"
+    placeholder: "git-push"
+    description: "Webhook URL path. In GitHub repo Settings → Webhooks, set URL to: https://your-halo-host/hooks/[this value]. Select event: Pushes."
+
+  - key: project_path
+    label: Project Directory (for auto-write)
+    type: string
+    required: false
+    default: ""
+    placeholder: "/Users/you/projects/my-app"
+    description: "Optional. If set, the agent will automatically write the changelog entry to CHANGELOG.md in this directory. Leave empty to display the entry in the report only."
+
+  - key: version_tag
+    label: Version Label
+    type: string
+    required: false
+    default: ""
+    placeholder: "1.2.0"
+    description: "Version label to use in the changelog header (e.g. '1.2.0'). Leave empty to use 'Unreleased'."
+
+  - key: include_other_commits
+    label: Include Non-conventional Commits
+    type: boolean
+    required: true
+    default: false
+    description: "When enabled, commits that don't follow the Conventional Commits format are included in an 'Other' section. Recommended to keep off for clean changelogs."
+
+  - key: output_language
+    label: Output Language
+    type: select
+    required: true
+    default: en-US
+    options:
+      - label: English
+        value: en-US
+      - label: 中文
+        value: zh-CN
+
+subscriptions:
+  - id: push-received
+    source:
+      type: webhook
+      config:
+        path: "git-push"
+
+memory_schema:
+  processed_push_shas:
+    type: array
+    description: "Push SHAs already processed — prevents duplicate changelog entries (capped at 100)"
+  total_entries_generated:
+    type: number
+    description: "Cumulative count of changelog entries generated"
+  last_generated_at:
+    type: date
+    description: "Timestamp of the most recent changelog generation"
+
+output:
+  notify:
+    system: true
+  format: markdown
+
+escalation:
+  enabled: false
+
+store:
+  slug: changelog-generator
+  category: dev-tools
+  tags: [changelog, git, conventional-commits, release, automation, devops]
+  locale: en-US
+  min_app_version: "0.5.0"
+  license: MIT
+  repository: https://github.com/openkursar/digital-human-protocol
+
+i18n:
+  zh-CN:
+    name: Changelog 自动生成器
+    description: 监听主分支的 Push 事件，解析 Conventional Commits 格式的提交记录，自动生成标准的 Keep-a-Changelog 格式更新日志，无需手动整理。
+    config_schema:
+      watch_branch:
+        label: 监听分支
+        description: "只有推送到此分支时才生成 Changelog。大多数项目填 main 或 master。"
+        placeholder: "main"
+      webhook_path:
+        label: Webhook 路径
+        description: "在 GitHub 仓库 Settings → Webhooks 中，将 URL 设为：https://your-halo-host/hooks/[此值]，事件选择 Pushes。"
+        placeholder: "git-push"
+      project_path:
+        label: 项目目录（自动写入）
+        description: "可选。填写后，Agent 会自动将生成的条目写入该目录下的 CHANGELOG.md。留空则仅在报告中展示。"
+        placeholder: "/Users/you/projects/my-app"
+      version_tag:
+        label: 版本号
+        description: "Changelog 条目头部使用的版本标签（如 1.2.0）。留空则使用 Unreleased。"
+        placeholder: "1.2.0"
+      include_other_commits:
+        label: 包含非规范提交
+        description: "开启后，不符合 Conventional Commits 格式的提交也会收录到 Other 分类。建议关闭以保持 Changelog 整洁。"
+      output_language:
+        label: 输出语言
+        options:
+          en-US: English
+          zh-CN: 中文

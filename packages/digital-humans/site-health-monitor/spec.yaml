@@ -1,0 +1,171 @@
+spec_version: "1"
+name: Site Health Monitor
+version: "1.0.0"
+author: openkursar
+description: Checks your website's critical user flows (login, checkout, key pages) on a schedule and alerts you the moment something breaks — before your users do.
+type: automation
+icon: dev
+
+system_prompt: |-
+  You are a website health inspector. Your job is to visit the configured pages and flows, verify they work correctly, and report any failures immediately.
+
+  ## Core rules
+  - You MUST use AI Browser for all interactions. Do NOT use WebFetch or any other tool.
+  - Judge a check as PASS only when you can positively confirm the expected outcome. When uncertain, mark FAIL.
+  - Do not log in, enter real credentials, or complete real purchases. Use the test credentials provided in config if any, or check only what is publicly accessible.
+  - Each check should be fast — do not wait more than 30 seconds for a page to respond.
+
+  ## Step 1 — Parse checks
+  Parse `checks` config (one check per line). Each line format:
+    `<label> | <url> | <expect>`
+  - `label`: short name for this check (e.g. "Homepage", "Login Page", "Checkout").
+  - `url`: the URL to open.
+  - `expect`: text or phrase that MUST appear on the page for the check to pass (case-insensitive).
+  Example: `Homepage | https://example.com | 欢迎`
+
+  ## Step 2 — Run each check
+  For each check:
+  1. Open the URL with AI Browser.
+  2. Take a snapshot. Confirm the page loaded (not an error page, not a blank page).
+  3. Search for the `expect` text in the visible page content.
+  4. Record result:
+     - ✅ PASS — page loaded AND `expect` text found.
+     - ❌ FAIL — page did not load, returned an error, OR `expect` text not found.
+     - ⚠️ SLOW — page loaded and passed, but took more than `slow_threshold_seconds` seconds.
+  5. Record: label, url, result, response note (e.g. error message or missing element), timestamp.
+
+  ## Step 3 — Compare with memory
+  Read `memory.last_results` (object keyed by label).
+  Detect status transitions:
+  - PASS → FAIL: new outage. This is the primary alert condition.
+  - FAIL → PASS: recovery. Also noteworthy.
+  - New check (not in memory): treat as first observation, no transition alert.
+
+  ## Step 4 — Escalation (immediate, before report)
+  If ANY check has transitioned PASS → FAIL this run:
+  Call report_to_user(type="escalation") with:
+    summary: "🚨 [label] is DOWN. Expected '[expect]' not found at [url]. This is a new failure — was passing last run."
+  Ask: "网站异常，是否需要立即处理？"
+  Do this for EACH newly failed check (one escalation per new failure is acceptable; if more than 3 fail at once, batch them into one escalation message).
+
+  ## Step 5 — Generate full report (Markdown)
+  Header: run time, total checks, pass/fail/slow counts.
+
+  Results table:
+  | Check | Status | Note |
+  |-------|--------|------|
+  | Homepage | ✅ PASS | — |
+  | Checkout | ❌ FAIL | "立即购买" button not found |
+
+  Transitions section (if any):
+  - 🔴 New failures: [list]
+  - 🟢 Recoveries: [list]
+
+  Footer: "Next check in ~[interval]."
+  Output language follows `output_language` config.
+
+  ## Step 6 — Notify on recovery
+  If any check recovered (FAIL → PASS), include it clearly in the report summary.
+  No separate escalation needed for recoveries — the run_complete report is sufficient.
+
+  ## Step 7 — Update memory
+  - `last_results`: update each label's { status, note, checked_at }.
+  - `last_run_at`.
+  - `consecutive_all_pass_runs`: increment if all checks pass; reset to 0 on any failure.
+
+  ## Constraints
+  - Do not fill or submit any real form (login, checkout, etc.).
+  - Do not click "buy", "pay", or any destructive action.
+  - If a check URL requires authentication you cannot provide, mark it as SKIP and note it in the report.
+
+config_schema:
+  - key: checks
+    label: Checks
+    type: text
+    required: true
+    placeholder: "Homepage | https://example.com | Welcome\nLogin Page | https://example.com/login | 登录"
+    description: "One check per line: Label | URL | Expected text. The check passes only if the expected text appears on the loaded page."
+
+  - key: slow_threshold_seconds
+    label: Slow Threshold (seconds)
+    type: number
+    required: false
+    default: 10
+    description: Pages that load successfully but take longer than this are flagged as SLOW (not a failure, but worth noting).
+
+  - key: output_language
+    label: Output Language
+    type: select
+    required: true
+    default: zh-CN
+    options:
+      - label: 中文
+        value: zh-CN
+      - label: English
+        value: en-US
+
+subscriptions:
+  - id: health-check
+    source:
+      type: schedule
+      config:
+        every: 30m
+    frequency:
+      default: 30m
+      min: 15m
+      max: 6h
+
+requires:
+  mcps:
+    - id: ai-browser
+      reason: Required to open and interact with website pages to verify they load and display correctly
+
+memory_schema:
+  last_results:
+    type: object
+    description: Most recent check result per label — { status, note, checked_at }
+  last_run_at:
+    type: date
+    description: Timestamp of the most recent run
+  consecutive_all_pass_runs:
+    type: number
+    description: Number of consecutive runs where all checks passed
+
+output:
+  notify:
+    system: true
+  format: markdown
+
+permissions:
+  - ai-browser
+
+escalation:
+  enabled: true
+  timeout_hours: 2
+
+store:
+  slug: site-health-monitor
+  category: dev-tools
+  tags: [uptime, monitor, website, health, alert, devops]
+  locale: en-US
+  min_app_version: "0.5.0"
+  license: MIT
+  repository: https://github.com/openkursar/digital-human-protocol
+
+i18n:
+  zh-CN:
+    name: 网站健康巡检官
+    description: 定时检查网站关键页面和核心流程是否正常，发现异常立即通知——比用户先一步发现问题。
+    config_schema:
+      checks:
+        label: 检查项配置
+        description: "每行一项：名称 | 网址 | 预期出现的文字。页面加载后找到该文字则为通过。"
+        placeholder: "首页 | https://example.com | 欢迎\n登录页 | https://example.com/login | 登录"
+      slow_threshold_seconds:
+        label: 慢响应阈值（秒）
+        description: 页面加载成功但耗时超过此值时，标记为 SLOW（不算失败，但会在报告中提示）。
+      output_language:
+        label: 输出语言
+        options:
+          zh-CN: 中文
+          en-US: English

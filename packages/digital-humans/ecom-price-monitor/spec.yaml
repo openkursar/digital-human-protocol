@@ -1,0 +1,174 @@
+spec_version: "1"
+name: Ecom Price Monitor
+version: "1.0.0"
+author: openkursar
+description: Tracks prices and stock status across multiple e-commerce platforms for any product URLs you provide — alerts when a target price is hit or stock changes.
+type: automation
+icon: shopping
+
+system_prompt: |-
+  You are a multi-platform price and stock monitoring assistant. Your job is to check configured product pages, extract current prices and stock status, and alert when conditions are met.
+
+  ## Core rules
+  - You MUST use AI Browser for all page interactions. Do NOT use WebFetch or any other tool.
+  - Only report prices you can directly observe. Never guess or fabricate prices.
+  - Prioritize the final checkout price (e.g. 券后价, 到手价, after-coupon price) over the listed price when both are visible.
+  - If a page fails to load or the price cannot be extracted, record the failure and continue with the next product. Never update memory with a bad value.
+  - Do not make any purchase or add items to cart.
+
+  ## Step 1 — Parse product list
+  Parse `products` config. Each line format:
+    `<label> | <url> | <target_price>`
+  - `label`: short product name (e.g. "AirPods Pro", "iPad mini").
+  - `url`: full product page URL.
+  - `target_price`: numeric threshold in local currency. Alert when price ≤ this value. Use 0 to disable target-price alert for this item (still tracks price and stock).
+  Example: `AirPods Pro | https://item.jd.com/xxx.html | 1299`
+
+  ## Step 2 — Check each product
+  For each product:
+  1. Open the URL with AI Browser.
+  2. Extract:
+     - Current price (prefer final checkout price / 券后价 / sale price over list price).
+     - Promotion text (if any — e.g. "限时特价", "满减", "优惠券").
+     - Stock status: `in_stock` / `out_of_stock` / `unknown`.
+  3. Read `memory.products[label]`:
+     - `last_price`: price from previous run.
+     - `lowest_ever`: historical lowest price observed.
+     - `last_stock`: previous stock status.
+     - `last_notified_price`: price at which the last alert was sent.
+  4. Update:
+     - If `current_price < lowest_ever`: update `lowest_ever`.
+     - Record in price history.
+
+  ## Step 3 — Alert logic (per product)
+  Trigger an alert when ANY of the following is true:
+  A. Target price hit: `target_price > 0` AND `current_price <= target_price` AND `current_price != last_notified_price`.
+  B. New historical low: `notify_on_new_low` is true AND `current_price < lowest_ever (before this run)`.
+  C. Back in stock: `last_stock` was `out_of_stock` AND `current_price` is now `in_stock` AND `notify_on_restock` is true.
+
+  Suppress duplicates: if condition A is met but `current_price == last_notified_price` AND less than 6 hours have passed since last notification, skip.
+
+  ## Step 4 — Generate report (Markdown)
+  Header: run time, number of products checked.
+
+  For each product, one row:
+  | Product | Price | vs Target | Stock | Trend | Alert |
+  |---------|-------|-----------|-------|-------|-------|
+  | AirPods Pro | ¥1,249 | ✅ -¥50 | 有货 | ▼ | 🔔 目标价触发 |
+  | iPad mini | ¥3,299 | — | 缺货 | — | — |
+
+  Trend arrows: ▼ (down from last run) / ▲ (up) / — (no change or first run).
+  Alert column: show trigger reason if alerted, otherwise "—".
+
+  Footer: "下次检查约 [interval] 后。"
+  Output language follows `output_language` config.
+
+  ## Step 5 — Update memory
+  For each product update `memory.products[label]`:
+  - `last_price`, `lowest_ever`, `last_stock`.
+  - `price_history`: append { timestamp, price, promotion, stock }. Trim to last 90 entries per product.
+  - On alert: update `last_notified_price` and `last_notified_at`.
+  Set `memory.last_run_at`.
+
+  ## Escalation
+  Escalate if ALL products failed to load in the same run (possible network issue or Halo offline).
+  Ask: "所有商品页面均无法访问，请检查网络或页面地址是否有效。"
+
+config_schema:
+  - key: products
+    label: Products to Monitor
+    type: text
+    required: true
+    placeholder: "AirPods Pro | https://item.jd.com/xxx.html | 1299\nNike Air Max | https://www.nike.com.cn/xxx | 899"
+    description: "One product per line: Label | URL | Target Price. Set target price to 0 to track price and stock without a price alert."
+
+  - key: notify_on_new_low
+    label: Alert on New Historical Low
+    type: boolean
+    required: true
+    default: false
+    description: Also alert when any product hits a new all-time low price, even if above the target price.
+
+  - key: notify_on_restock
+    label: Alert on Restock
+    type: boolean
+    required: true
+    default: true
+    description: Alert when a previously out-of-stock product becomes available again.
+
+  - key: output_language
+    label: Output Language
+    type: select
+    required: true
+    default: zh-CN
+    options:
+      - label: 中文
+        value: zh-CN
+      - label: English
+        value: en-US
+
+subscriptions:
+  - id: price-check
+    source:
+      type: schedule
+      config:
+        every: 6h
+    frequency:
+      default: 6h
+      min: 1h
+      max: 24h
+
+requires:
+  mcps:
+    - id: ai-browser
+      reason: Required to open product pages across different e-commerce platforms and extract price and stock data
+
+memory_schema:
+  products:
+    type: object
+    description: Per-product state keyed by label — { last_price, lowest_ever, last_stock, last_notified_price, last_notified_at, price_history }
+  last_run_at:
+    type: date
+    description: Timestamp of the most recent run
+
+output:
+  notify:
+    system: true
+  format: markdown
+
+permissions:
+  - ai-browser
+
+escalation:
+  enabled: true
+  timeout_hours: 24
+
+store:
+  slug: ecom-price-monitor
+  category: shopping
+  tags: [price, shopping, monitor, alert, multi-platform, restock]
+  locale: zh-CN
+  min_app_version: "0.5.0"
+  license: MIT
+  repository: https://github.com/openkursar/digital-human-protocol
+
+i18n:
+  zh-CN:
+    name: 电商价格库存监控官
+    description: 同时追踪多个平台的多款商品价格和库存，到达目标价或恢复有货时立即通知，支持任意电商网站。
+    config_schema:
+      products:
+        label: 监控商品列表
+        description: "每行一款：商品名称 | 商品链接 | 目标价格。目标价设为 0 表示只追踪不设价格提醒。"
+        placeholder: "AirPods Pro | https://item.jd.com/xxx.html | 1299\nNike Air Max | https://www.nike.com.cn/xxx | 899"
+      notify_on_new_low:
+        label: 历史新低时通知
+        description: 开启后，即使未达目标价，只要出现历史最低价也会通知。
+      notify_on_restock:
+        label: 补货时通知
+        description: 开启后，商品从缺货变为有货时自动通知。
+      output_language:
+        label: 输出语言
+        options:
+          zh-CN: 中文
+          en-US: English

@@ -1,8 +1,372 @@
 {
   "version": 1,
-  "generated_at": "2026-02-24T09:28:03.003Z",
+  "generated_at": "2026-02-24T11:56:31.673Z",
   "source": "https://openkursar.github.io/digital-human-protocol",
   "apps": [
+    {
+      "slug": "bilibili-comment-replier",
+      "name": "Bilibili Comment Replier",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Monitors a Bilibili video for new comments and auto-replies as the creator — friendly, on-topic, and duplicate-free.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/bilibili-comment-replier",
+      "size_bytes": 6345,
+      "checksum": "sha256:8eb20906d3b1ade60b7c667da794ec73657cc277142a846b349bf43d2b8df71e",
+      "category": "social",
+      "tags": [
+        "bilibili",
+        "comments",
+        "auto-reply",
+        "creator",
+        "social"
+      ],
+      "icon": "social",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:22:30.020Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "B站评论自动回复",
+          "description": "监控指定B站视频的新评论，以创作者身份自动发送友好、有针对性的回复，并避免重复。"
+        }
+      }
+    },
+    {
+      "slug": "boss-job-monitor",
+      "name": "Boss Job Monitor",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Monitors Boss Zhipin daily for new job listings matching your keywords and city, ranks them by fit, and delivers a clean digest.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/boss-job-monitor",
+      "size_bytes": 6597,
+      "checksum": "sha256:0461f8681f0ebdbe80a5fef1b51d1c212e6d26c6bbd499e49a14d3b022cc65e9",
+      "category": "productivity",
+      "tags": [
+        "jobs",
+        "recruitment",
+        "boss",
+        "career",
+        "monitor"
+      ],
+      "icon": "productivity",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:41:26.313Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "Boss直聘职位监控",
+          "description": "每天自动在Boss直聘搜索符合条件的新职位，按匹配度排序后推送精选摘要，告别反复刷新。"
+        }
+      }
+    },
+    {
+      "slug": "changelog-generator",
+      "name": "Changelog Generator",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Listens for pushes to your main branch via webhook, parses commit messages following Conventional Commits, and generates a formatted Keep-a-Changelog entry automatically.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/changelog-generator",
+      "size_bytes": 10172,
+      "checksum": "sha256:b1483494dc57e9a78f8b258bdcd43b51a24a744f15b6eaa18cd280f1a21a0f18",
+      "category": "dev-tools",
+      "tags": [
+        "changelog",
+        "git",
+        "conventional-commits",
+        "release",
+        "automation",
+        "devops"
+      ],
+      "icon": "dev",
+      "locale": "en-US",
+      "min_app_version": "0.5.0",
+      "updated_at": "2026-02-24T11:53:22.966Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "Changelog 自动生成器",
+          "description": "监听主分支的 Push 事件，解析 Conventional Commits 格式的提交记录，自动生成标准的 Keep-a-Changelog 格式更新日志，无需手动整理。"
+        }
+      }
+    },
+    {
+      "slug": "cicd-failure-analyst",
+      "name": "CI Failure Analyst",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Receives GitHub Actions failure notifications via webhook, fetches the build logs, diagnoses the root cause, and delivers a fix direction — before you even open the console.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/cicd-failure-analyst",
+      "size_bytes": 10056,
+      "checksum": "sha256:07def387c5f3b76d81d9ac30fe1863937619946afaf504468b401e028f113a31",
+      "category": "dev-tools",
+      "tags": [
+        "ci",
+        "cd",
+        "github-actions",
+        "devops",
+        "build",
+        "failure",
+        "webhook"
+      ],
+      "icon": "dev",
+      "locale": "en-US",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T11:47:34.032Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "CI 构建失败分析师",
+          "description": "通过 Webhook 接收 GitHub Actions 失败通知，自动抓取构建日志、诊断根因，并给出修复方向——比你打开控制台更快。"
+        }
+      }
+    },
+    {
+      "slug": "cn-stock-daily",
+      "name": "CN Stock Daily",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Delivers a concise daily digest of your A-share or HK-share watchlist after market close — price changes, volume highlights, and key news.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/cn-stock-daily",
+      "size_bytes": 5239,
+      "checksum": "sha256:0e86c69382c24c8a3b35837e7a4b79722aadf043a7ff4859f24e21fff13f7723",
+      "category": "data",
+      "tags": [
+        "stocks",
+        "finance",
+        "A-share",
+        "HK",
+        "daily",
+        "monitor"
+      ],
+      "icon": "data",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:43:05.213Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "A股港股日报",
+          "description": "每个交易日收盘后自动抓取自选股行情，生成涨跌摘要和关键新闻，让你告别盯盘。"
+        }
+      }
+    },
+    {
+      "slug": "complexity-watchdog",
+      "name": "Code Complexity Watchdog",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Watches your source files for changes and runs instant complexity checks — alerts when a file grows too large or accumulates too many TODO/FIXME markers, so tech debt stays visible.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/complexity-watchdog",
+      "size_bytes": 9871,
+      "checksum": "sha256:39738d0fe95a44ff2a605aaff8482002f0c2f4867abdd525959a8858559eb326",
+      "category": "dev-tools",
+      "tags": [
+        "code-quality",
+        "complexity",
+        "tech-debt",
+        "todo",
+        "refactor",
+        "devops",
+        "file-watcher"
+      ],
+      "icon": "dev",
+      "locale": "en-US",
+      "min_app_version": "0.5.0",
+      "updated_at": "2026-02-24T11:56:02.063Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "代码复杂度守卫",
+          "description": "实时监控源文件变更，自动检测文件行数和 TODO/FIXME 标记是否超出阈值，仅在情况变差时告警，让技术债务无处遁形。"
+        }
+      }
+    },
+    {
+      "slug": "daily-weather-outfit",
+      "name": "Daily Weather & Outfit",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Delivers a personalized morning brief every day — today's weather, a practical outfit recommendation, and any travel advisories worth knowing.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/daily-weather-outfit",
+      "size_bytes": 5686,
+      "checksum": "sha256:4ea1183cffc9bcd94fd5d87456f3e4252487fd8c04004b63634e3418e47bab20",
+      "category": "productivity",
+      "tags": [
+        "weather",
+        "daily",
+        "outfit",
+        "morning",
+        "lifestyle"
+      ],
+      "icon": "productivity",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:45:20.693Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "每日天气穿搭助手",
+          "description": "每天早上 7 点推送所在城市的天气简报和个性化穿搭建议，根据气温、天气状况和你的风格偏好量身定制。"
+        }
+      }
+    },
+    {
+      "slug": "dependency-vulnerability-scanner",
+      "name": "Dependency Vulnerability Scanner",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Watches your project's dependency files for changes and runs a scheduled weekly scan — alerts when new security vulnerabilities are found, sorted by severity.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/dependency-vulnerability-scanner",
+      "size_bytes": 10009,
+      "checksum": "sha256:f9828d160060986d4ca71fa04a09d7be4da3336c13dc3e6272cf88d82cec6bdd",
+      "category": "dev-tools",
+      "tags": [
+        "security",
+        "dependencies",
+        "npm",
+        "vulnerability",
+        "CVE",
+        "devops",
+        "scanner"
+      ],
+      "icon": "dev",
+      "locale": "en-US",
+      "min_app_version": "0.5.0",
+      "updated_at": "2026-02-24T11:51:24.154Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "依赖漏洞侦察兵",
+          "description": "监控项目依赖文件变化并每周全量扫描，发现新安全漏洞时立即告警，按严重级别排序，仅推送新增漏洞，避免重复打扰。"
+        }
+      }
+    },
+    {
+      "slug": "douyin-comment-replier",
+      "name": "Douyin Comment Replier",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Monitors a Douyin video for new comments and auto-replies as the creator — friendly, specific, and duplicate-free.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/douyin-comment-replier",
+      "size_bytes": 6649,
+      "checksum": "sha256:76ca018e905875fdf38b267e2651aa9fb4958b549834381c9b822bd18aac9742",
+      "category": "social",
+      "tags": [
+        "douyin",
+        "comments",
+        "auto-reply",
+        "creator",
+        "social"
+      ],
+      "icon": "social",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:41:26.271Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "抖音评论自动回复",
+          "description": "监控指定抖音视频的新评论，以创作者身份自动发送友好、有针对性的回复，并避免重复。"
+        }
+      }
+    },
+    {
+      "slug": "ecom-price-monitor",
+      "name": "Ecom Price Monitor",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Tracks prices and stock status across multiple e-commerce platforms for any product URLs you provide — alerts when a target price is hit or stock changes.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/ecom-price-monitor",
+      "size_bytes": 6848,
+      "checksum": "sha256:e3060dbca14ba7724d632a2a290b7456f3c3c1bffd8ae24a9fe74a4ee39552f1",
+      "category": "shopping",
+      "tags": [
+        "price",
+        "shopping",
+        "monitor",
+        "alert",
+        "multi-platform",
+        "restock"
+      ],
+      "icon": "shopping",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T11:35:21.107Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "电商价格库存监控官",
+          "description": "同时追踪多个平台的多款商品价格和库存，到达目标价或恢复有货时立即通知，支持任意电商网站。"
+        }
+      }
+    },
+    {
+      "slug": "github-issue-triager",
+      "name": "GitHub Issue Triager",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Receives new GitHub issues via webhook, classifies them by type, applies labels, posts a professional first response, and escalates critical or security issues immediately.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/github-issue-triager",
+      "size_bytes": 9647,
+      "checksum": "sha256:aa667390bfe0958ed2b343c66e5240ca82c926e75d4ea397b1514511b75657e6",
+      "category": "dev-tools",
+      "tags": [
+        "github",
+        "issues",
+        "triage",
+        "labels",
+        "automation",
+        "devops"
+      ],
+      "icon": "dev",
+      "locale": "en-US",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T11:49:02.607Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "GitHub Issue 分诊官",
+          "description": "通过 Webhook 接收新 Issue，自动分类、打标签、发送专业首次回复，安全类或紧急 Issue 立即升级通知。"
+        }
+      }
+    },
     {
       "slug": "github-pr-reviewer",
       "name": "GitHub PR Reviewer",
@@ -12,8 +376,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/github-pr-reviewer",
-      "size_bytes": 6157,
-      "checksum": "sha256:4a3b7c586bee317095a1f4c6f1bd9e06adc573889a7dc0705d60c227eab6f394",
+      "size_bytes": 6158,
+      "checksum": "sha256:16daef18772b9bf29aa3c4301dc16b4a7d43167297ad24c84a22516ceb4c510d",
       "category": "dev-tools",
       "tags": [
         "github",
@@ -28,7 +392,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T09:19:49.866Z",
+      "updated_at": "2026-02-24T09:31:23.014Z",
       "i18n": {
         "zh-CN": {
           "name": "GitHub PR 审查员",
@@ -45,8 +409,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/hn-daily",
-      "size_bytes": 4547,
-      "checksum": "sha256:232149c712fb2096dd42f3f9e371d47e169db0d97a0182f5416f0a8fe819e7cc",
+      "size_bytes": 4548,
+      "checksum": "sha256:73e4cd05cc9e99e539dd428f43dbd1b61a4ad666efd2d0f02d9f64df9cb8b151",
       "category": "news",
       "tags": [
         "hn",
@@ -60,7 +424,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T09:19:49.789Z",
+      "updated_at": "2026-02-24T09:31:30.341Z",
       "i18n": {
         "zh-CN": {
           "name": "HN 每日简报",
@@ -77,8 +441,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/jd-price-hunter",
-      "size_bytes": 5449,
-      "checksum": "sha256:49e099d48840e9fb3356639b9afb956ef075031969f47009878318d7148ea871",
+      "size_bytes": 5450,
+      "checksum": "sha256:cc2d860d10c1d1d4b78539407129890c104e76ff26a7aace8d21be09e794f661",
       "category": "shopping",
       "tags": [
         "shopping",
@@ -92,11 +456,272 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T09:19:49.819Z",
+      "updated_at": "2026-02-24T09:31:36.371Z",
       "i18n": {
         "zh-CN": {
           "name": "京东价格猎手",
           "description": "监控京东商品页面的价格变动，在价格达到目标值或出现新低时发送通知，并避免重复提醒。"
+        }
+      }
+    },
+    {
+      "slug": "parcel-tracker",
+      "name": "Parcel Tracker",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Tracks your parcels across all major Chinese carriers, alerts on status changes, and notifies when delivery is near or complete.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/parcel-tracker",
+      "size_bytes": 5483,
+      "checksum": "sha256:61bc138d479da5896234caa8b7f292ab101ef642c1f8f9c2c959311cc48b55f0",
+      "category": "productivity",
+      "tags": [
+        "parcel",
+        "delivery",
+        "logistics",
+        "tracking",
+        "express"
+      ],
+      "icon": "productivity",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:43:05.235Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "快递追踪助手",
+          "description": "自动追踪多个快递单号，状态变化时立刻推送通知，尤其是快到了或已签收时，支持顺丰、京东、圆通等主流快递。"
+        }
+      }
+    },
+    {
+      "slug": "release-gatekeeper",
+      "name": "Release Gatekeeper",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Automatically audits your GitHub repository before each release — checks CI status, open issues, PR health, and change scope — and gives a clear go/no-go decision.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/release-gatekeeper",
+      "size_bytes": 8952,
+      "checksum": "sha256:a1106d1de9767d6214a1b14bcfd3cf9ef7a29c03ac307da10f7d680047b8613c",
+      "category": "dev-tools",
+      "tags": [
+        "release",
+        "ci",
+        "github",
+        "devops",
+        "gatekeeper",
+        "quality"
+      ],
+      "icon": "dev",
+      "locale": "en-US",
+      "min_app_version": "0.5.0",
+      "updated_at": "2026-02-24T11:36:24.724Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "发布风险守门员",
+          "description": "每次发布前自动审查 GitHub 仓库——检查 CI 状态、开放 PR、关键 Issue 和变更范围——给出明确的发布放行或阻断决策。"
+        }
+      }
+    },
+    {
+      "slug": "sentiment-monitor",
+      "name": "Sentiment Monitor",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Tracks brand mentions, competitor moves, and policy changes across news and public platforms — delivers a daily risk-graded digest with actionable highlights.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/sentiment-monitor",
+      "size_bytes": 7288,
+      "checksum": "sha256:77556127e99332fbdfeab4af4c3e883fa35f43a1d369743f5af1f09396df44bd",
+      "category": "news",
+      "tags": [
+        "brand",
+        "sentiment",
+        "monitoring",
+        "PR",
+        "crisis",
+        "policy"
+      ],
+      "icon": "news",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T11:32:41.164Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "舆情监测官",
+          "description": "每天扫描新闻和公开平台的品牌提及、竞品动态和政策变化，按风险等级分类推送，高风险内容立即升级提醒。"
+        }
+      }
+    },
+    {
+      "slug": "site-health-monitor",
+      "name": "Site Health Monitor",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Checks your website's critical user flows (login, checkout, key pages) on a schedule and alerts you the moment something breaks — before your users do.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/site-health-monitor",
+      "size_bytes": 6441,
+      "checksum": "sha256:1c59ab559b2d816cf10d79b259a87b993c15c89b34d09fff1461a3df39ad6957",
+      "category": "dev-tools",
+      "tags": [
+        "uptime",
+        "monitor",
+        "website",
+        "health",
+        "alert",
+        "devops"
+      ],
+      "icon": "dev",
+      "locale": "en-US",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T11:33:34.472Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "网站健康巡检官",
+          "description": "定时检查网站关键页面和核心流程是否正常，发现异常立即通知——比用户先一步发现问题。"
+        }
+      }
+    },
+    {
+      "slug": "taobao-price-hunter",
+      "name": "Taobao Price Hunter",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Monitors a Taobao or Tmall product page for price drops and promotions, notifies when the price hits the target, and avoids duplicate alerts.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/taobao-price-hunter",
+      "size_bytes": 6552,
+      "checksum": "sha256:5d3ac73d75df69adb1e183a3e60e92509573813560738d9bc4c38dd745b4aa2c",
+      "category": "shopping",
+      "tags": [
+        "taobao",
+        "tmall",
+        "price",
+        "shopping",
+        "alert"
+      ],
+      "icon": "shopping",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:41:26.293Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "淘宝天猫价格猎手",
+          "description": "监控淘宝或天猫商品页面的价格变动，在价格达到目标值或出现新低时通知，并避免重复提醒。"
+        }
+      }
+    },
+    {
+      "slug": "tender-radar",
+      "name": "Tender Radar",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Monitors government and enterprise procurement portals for new tenders matching your industry, budget, and region — delivers a prioritized opportunity list every day.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/tender-radar",
+      "size_bytes": 7013,
+      "checksum": "sha256:7738725f8e7bc0129c661a88d72c51babfa5e8df631f48bb6acb59684e66ca39",
+      "category": "productivity",
+      "tags": [
+        "tender",
+        "procurement",
+        "government",
+        "monitor",
+        "b2b"
+      ],
+      "icon": "data",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T11:31:47.909Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "招投标机会雷达",
+          "description": "每天扫描政府采购和企业招标平台，按关键词、预算、地区筛选新机会，输出优先级排序的机会清单。"
+        }
+      }
+    },
+    {
+      "slug": "ticket-triage-agent",
+      "name": "Ticket Triage Agent",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Receives incoming support tickets via webhook, classifies them by type and urgency, generates a first-response draft, and escalates high-priority cases immediately.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/ticket-triage-agent",
+      "size_bytes": 6474,
+      "checksum": "sha256:37c29d43b3cd529f3398a6eb943c72c9b7bc251b2e5c7827d31a36d6f7f0ef2f",
+      "category": "productivity",
+      "tags": [
+        "support",
+        "ticket",
+        "triage",
+        "webhook",
+        "customer-service",
+        "automation"
+      ],
+      "icon": "productivity",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "updated_at": "2026-02-24T11:34:26.063Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "客服工单分诊官",
+          "description": "通过 Webhook 接收新工单，自动分类优先级、生成首回复草稿，高优先级工单立即升级通知负责人。"
+        }
+      }
+    },
+    {
+      "slug": "train-ticket-watcher",
+      "name": "Train Ticket Watcher",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Monitors 12306 for available train tickets on your chosen date and route, and alerts you the moment seats open up.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/train-ticket-watcher",
+      "size_bytes": 6975,
+      "checksum": "sha256:7bcd4a04e7328afa3402e77058f8d4ebda2da896773cdff37e39e7cb71904ee1",
+      "category": "productivity",
+      "tags": [
+        "train",
+        "ticket",
+        "travel",
+        "monitor"
+      ],
+      "icon": "productivity",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:45:20.655Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "12306 余票监控",
+          "description": "自动监控 12306 指定日期和路线的余票情况，有票立刻推送通知，支持指定车次和席别，告别手动刷票。"
         }
       }
     },
@@ -109,8 +734,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/wechat-article-monitor",
-      "size_bytes": 5352,
-      "checksum": "sha256:a6c55e5c027c16d92cf14808c4781f3d657f6f4aaea7ed7416d89a45d7dad799",
+      "size_bytes": 5353,
+      "checksum": "sha256:87010458201ad42a137d4838b487d3b80d3044f642db2b784b75d8c6a29320d4",
       "category": "content",
       "tags": [
         "wechat",
@@ -124,7 +749,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T09:19:49.888Z",
+      "updated_at": "2026-02-24T09:31:41.480Z",
       "i18n": {
         "zh-CN": {
           "name": "微信文章监控",
@@ -141,8 +766,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/weibo-hot-tracker",
-      "size_bytes": 5302,
-      "checksum": "sha256:0ebc762f9ea2af2470ae647511b6d007d42df1256fc9b9a5bccb30543d4feb96",
+      "size_bytes": 5303,
+      "checksum": "sha256:255639e8848a25a0173ce09b47da53dfce9242a4da02d62096ed2111ce4b3450",
       "category": "social",
       "tags": [
         "weibo",
@@ -156,11 +781,143 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T09:19:49.910Z",
+      "updated_at": "2026-02-24T09:31:49.040Z",
       "i18n": {
         "zh-CN": {
           "name": "微博热点追踪",
           "description": "追踪微博热搜榜单的排名变化，报告新上榜、显著上升和显著下降的热点话题。"
+        }
+      }
+    },
+    {
+      "slug": "xianyu-deal-hunter",
+      "name": "Xianyu Deal Hunter",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Monitors Xianyu (Idle Fish) for new second-hand listings matching your search, filters by price and condition, and alerts you instantly on new finds.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/xianyu-deal-hunter",
+      "size_bytes": 5732,
+      "checksum": "sha256:586c5c97262a278f0b765d99e5ab41db18088a89fa6b518ce404f3b1a0a0ef02",
+      "category": "shopping",
+      "tags": [
+        "xianyu",
+        "second-hand",
+        "deals",
+        "shopping",
+        "monitor"
+      ],
+      "icon": "shopping",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:43:05.191Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "闲鱼捡漏助手",
+          "description": "自动监控闲鱼上符合关键词和价格条件的二手新上架商品，按最新排序筛选后立刻推送，再也不错过好物。"
+        }
+      }
+    },
+    {
+      "slug": "xiaohongshu-ai-engager",
+      "name": "Xiaohongshu AI Engager",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Discovers high-quality AI-related posts on Xiaohongshu and leaves natural, on-topic comments to foster genuine community engagement.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/xiaohongshu-ai-engager",
+      "size_bytes": 9043,
+      "checksum": "sha256:5327104c42f32dc70fb9d16242950404a529360d9addc6a27cbdb7653575f911",
+      "category": "social",
+      "tags": [
+        "xiaohongshu",
+        "social",
+        "engagement",
+        "AI",
+        "community"
+      ],
+      "icon": "social",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:23:40.366Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "小红书 AI 互动助手",
+          "description": "自动发现小红书上与 AI 相关的高质量帖子，以真实用户的语气发表简短、有价值的评论，促进社区互动。"
+        }
+      }
+    },
+    {
+      "slug": "xiaohongshu-keyword-monitor",
+      "name": "Xiaohongshu Keyword Monitor",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Passively monitors Xiaohongshu for new posts mentioning your brand, product, or topic — surfaces what people are saying without any interaction.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/xiaohongshu-keyword-monitor",
+      "size_bytes": 6571,
+      "checksum": "sha256:e8d19b5fc88ae171aaf1c66589249cfea86767b05fc7d581a44ef6b18fbaea14",
+      "category": "social",
+      "tags": [
+        "xiaohongshu",
+        "brand",
+        "monitor",
+        "social",
+        "keyword"
+      ],
+      "icon": "social",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:45:20.675Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "小红书关键词监控",
+          "description": "被动监控小红书上提及品牌、产品或指定关键词的新帖子，按点赞数筛选后推送摘要，全程不产生任何互动。"
+        }
+      }
+    },
+    {
+      "slug": "zhihu-topic-monitor",
+      "name": "Zhihu Topic Monitor",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Monitors a Zhihu topic for new high-quality questions and answers, and delivers a curated digest of what's worth reading.",
+      "type": "automation",
+      "format": "bundle",
+      "path": "packages/digital-humans/zhihu-topic-monitor",
+      "size_bytes": 5419,
+      "checksum": "sha256:a9438a517246b0a2ade21e0714176e4e9630c28874eb9f264ad8c20b6ecf9148",
+      "category": "content",
+      "tags": [
+        "zhihu",
+        "knowledge",
+        "digest",
+        "content",
+        "monitor"
+      ],
+      "icon": "content",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T10:45:20.635Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "知乎话题监控",
+          "description": "定期扫描指定知乎话题下的新提问和高赞回答，按质量筛选后推送精选内容摘要，帮你持续关注感兴趣的领域动态。"
         }
       }
     }

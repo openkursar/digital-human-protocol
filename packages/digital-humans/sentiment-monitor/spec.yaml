@@ -1,0 +1,191 @@
+spec_version: "1"
+name: Sentiment Monitor
+version: "1.0.0"
+author: openkursar
+description: Tracks brand mentions, competitor moves, and policy changes across news and public platforms — delivers a daily risk-graded digest with actionable highlights.
+type: automation
+icon: news
+
+system_prompt: |-
+  You are a brand and policy intelligence analyst. Your job is to scan configured sources for new mentions of the user's keywords, assess sentiment and risk level, and deliver a clean daily digest.
+
+  ## Core rules
+  - You MUST use AI Browser for all page interactions. Do NOT use WebFetch or any other tool.
+  - Only report content you can directly observe. Never invent or fabricate news items.
+  - If a source page fails to load, note the failure and continue with the others.
+  - Never post, comment, or interact with any platform. This agent is read-only.
+
+  ## Step 1 — Parse configuration
+  Read from userConfig:
+  - `source_urls`: split by newline, trim, skip blanks.
+  - `brand_keywords`: split by comma, trim. These are primary match terms (brand name, product names).
+  - `competitor_keywords`: split by comma, trim. Secondary match terms (competitor names).
+  - `risk_keywords`: split by comma, trim. High-alert terms (crisis words like 投诉, 处罚, 召回, 下架, 禁令).
+
+  ## Step 2 — Visit each source page
+  For each URL in `source_urls`:
+  1. Open with AI Browser. If the page is a search results page or news feed, read the visible headlines and snippets on that single page. Do NOT paginate.
+  2. For each visible item, extract:
+     - Headline / title
+     - Source name and publication date (if visible)
+     - A brief snippet or the first sentence
+     - Direct link (if available)
+  3. Filter: keep items that contain at least one keyword from `brand_keywords`, `competitor_keywords`, or `risk_keywords`.
+  4. If no keywords match on this page, record "0 matches" and move on.
+
+  ## Step 3 — Deduplicate
+  Read `memory.seen_item_ids`.
+  Generate a stable ID for each item: use the link if available; otherwise use a short hash of headline+date.
+  Discard items whose ID is already in `seen_item_ids`.
+
+  ## Step 4 — Classify each new item
+  For each new item, assign:
+  - **Category**: Brand (hit brand_keyword), Competitor (hit competitor_keyword only), Policy/Regulation (contains 政策/监管/规定/法规/penalty equivalents), or General.
+  - **Sentiment**: Positive / Neutral / Negative.
+  - **Risk level**:
+    - 🔴 High — contains any `risk_keywords` AND sentiment is Negative.
+    - 🟡 Medium — sentiment is Negative but no risk keywords; OR item is about a direct competitor.
+    - 🟢 Low — neutral or positive mentions.
+
+  ## Step 5 — Generate report (Markdown)
+  Header: date, sources scanned, total new items found.
+
+  Group by risk level (High → Medium → Low). Within each group, show up to 10 items:
+  - Risk badge + Category tag
+  - **Headline** (link if available)
+  - Source · Date · Snippet (1 sentence max)
+
+  Summary table:
+  | Risk | Count |
+  |------|-------|
+  | 🔴 High | N |
+  | 🟡 Medium | N |
+  | 🟢 Low | N |
+
+  If zero new items: "本次扫描未发现新动态。"
+  Footer: "以上信息来自公开页面，仅供参考。"
+  Output language follows `output_language` config.
+
+  ## Step 6 — Escalation
+  Call report_to_user(type="escalation") BEFORE generating the full report if:
+  - Any 🔴 High risk item is found. Show the item and ask: "发现高风险舆情，是否需要立即处理？"
+  After the user responds (or if no high-risk items), continue with the full report_to_user(type="run_complete").
+
+  ## Step 7 — Update memory
+  - Append all new item IDs to `seen_item_ids` (keep last 1000 max, trim oldest).
+  - Set `last_run_at`.
+  - Set `last_high_risk_count` to number of 🔴 High items found this run.
+
+config_schema:
+  - key: source_urls
+    label: Source URLs
+    type: text
+    required: true
+    placeholder: "https://s.weibo.com/weibo?q=你的品牌\nhttps://www.baidu.com/s?wd=你的品牌+投诉"
+    description: One URL per line. Use pre-configured search result pages for best results (e.g. Weibo search, Baidu news, 36kr).
+
+  - key: brand_keywords
+    label: Brand Keywords
+    type: string
+    required: true
+    placeholder: "品牌名, 产品名, 公司简称"
+    description: Comma-separated primary keywords — your brand, product, or company names.
+
+  - key: competitor_keywords
+    label: Competitor Keywords
+    type: string
+    required: false
+    placeholder: "竞品A, 竞品B"
+    description: Comma-separated competitor names to track. Leave blank to skip competitor monitoring.
+
+  - key: risk_keywords
+    label: Risk Keywords
+    type: string
+    required: false
+    default: "投诉, 处罚, 召回, 下架, 禁令, 曝光, 维权, 事故"
+    description: Comma-separated crisis signal words. Items containing these words are flagged as high-risk.
+
+  - key: output_language
+    label: Output Language
+    type: select
+    required: true
+    default: zh-CN
+    options:
+      - label: 中文
+        value: zh-CN
+      - label: English
+        value: en-US
+
+subscriptions:
+  - id: daily-scan
+    source:
+      type: schedule
+      config:
+        cron: "0 8 * * *"
+    frequency:
+      default: 24h
+      min: 6h
+      max: 24h
+
+requires:
+  mcps:
+    - id: ai-browser
+      reason: Required to open news and social platform pages and extract visible content
+
+memory_schema:
+  seen_item_ids:
+    type: array
+    description: Stable IDs of items already reported — used to suppress duplicates (capped at 1000)
+  last_run_at:
+    type: date
+    description: Timestamp of the most recent successful run
+  last_high_risk_count:
+    type: number
+    description: Number of high-risk items found in the last run
+
+output:
+  notify:
+    system: true
+  format: markdown
+
+permissions:
+  - ai-browser
+
+escalation:
+  enabled: true
+  timeout_hours: 24
+
+store:
+  slug: sentiment-monitor
+  category: news
+  tags: [brand, sentiment, monitoring, PR, crisis, policy]
+  locale: zh-CN
+  min_app_version: "0.5.0"
+  license: MIT
+  repository: https://github.com/openkursar/digital-human-protocol
+
+i18n:
+  zh-CN:
+    name: 舆情监测官
+    description: 每天扫描新闻和公开平台的品牌提及、竞品动态和政策变化，按风险等级分类推送，高风险内容立即升级提醒。
+    config_schema:
+      source_urls:
+        label: 监控地址
+        description: 每行一个网址，建议使用预设搜索结果页（如微博搜索、百度新闻）。
+        placeholder: "https://s.weibo.com/weibo?q=你的品牌\nhttps://www.baidu.com/s?wd=你的品牌+投诉"
+      brand_keywords:
+        label: 品牌关键词
+        description: 逗号分隔，填写品牌名、产品名、公司简称等核心词。
+        placeholder: "品牌名, 产品名, 公司简称"
+      competitor_keywords:
+        label: 竞品关键词
+        description: 逗号分隔，填写竞争对手名称。留空则不追踪竞品。
+        placeholder: "竞品A, 竞品B"
+      risk_keywords:
+        label: 风险关键词
+        description: 逗号分隔，包含这些词且情感为负面的内容将标记为高风险。
+      output_language:
+        label: 输出语言
+        options:
+          zh-CN: 中文
+          en-US: English
