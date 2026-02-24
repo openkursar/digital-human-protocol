@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-02-24T06:42:53.080Z",
+  "generated_at": "2026-02-24T06:44:17.123Z",
   "source": "https://openkursar.github.io/digital-human-protocol",
   "apps": [
     {
@@ -26,7 +26,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T06:42:31.636Z"
+      "updated_at": "2026-02-24T06:44:14.259Z"
     },
     {
       "slug": "hn-daily",
@@ -51,7 +51,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T06:42:31.636Z"
+      "updated_at": "2026-02-24T06:44:14.260Z"
     },
     {
       "slug": "jd-price-hunter",
@@ -79,7 +79,7 @@
       "requires_skills": [
         "price-analysis"
       ],
-      "updated_at": "2026-02-24T06:42:31.636Z"
+      "updated_at": "2026-02-24T06:44:14.260Z"
     },
     {
       "slug": "wechat-article-monitor",
@@ -104,7 +104,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T06:42:31.636Z"
+      "updated_at": "2026-02-24T06:44:14.260Z"
     },
     {
       "slug": "weibo-hot-tracker",
@@ -129,7 +129,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T06:42:31.636Z"
+      "updated_at": "2026-02-24T06:44:14.260Z"
     }
   ]
 }
