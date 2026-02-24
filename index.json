@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-02-24T09:28:03.003Z",
+  "generated_at": "2026-02-24T09:33:44.352Z",
   "source": "https://openkursar.github.io/digital-human-protocol",
   "apps": [
     {
@@ -12,8 +12,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/github-pr-reviewer",
-      "size_bytes": 6157,
-      "checksum": "sha256:4a3b7c586bee317095a1f4c6f1bd9e06adc573889a7dc0705d60c227eab6f394",
+      "size_bytes": 6158,
+      "checksum": "sha256:16daef18772b9bf29aa3c4301dc16b4a7d43167297ad24c84a22516ceb4c510d",
       "category": "dev-tools",
       "tags": [
         "github",
@@ -28,7 +28,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T09:19:49.866Z",
+      "updated_at": "2026-02-24T09:33:41.004Z",
       "i18n": {
         "zh-CN": {
           "name": "GitHub PR 审查员",
@@ -45,8 +45,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/hn-daily",
-      "size_bytes": 4547,
-      "checksum": "sha256:232149c712fb2096dd42f3f9e371d47e169db0d97a0182f5416f0a8fe819e7cc",
+      "size_bytes": 4548,
+      "checksum": "sha256:73e4cd05cc9e99e539dd428f43dbd1b61a4ad666efd2d0f02d9f64df9cb8b151",
       "category": "news",
       "tags": [
         "hn",
@@ -60,7 +60,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T09:19:49.789Z",
+      "updated_at": "2026-02-24T09:33:41.004Z",
       "i18n": {
         "zh-CN": {
           "name": "HN 每日简报",
@@ -77,8 +77,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/jd-price-hunter",
-      "size_bytes": 5449,
-      "checksum": "sha256:49e099d48840e9fb3356639b9afb956ef075031969f47009878318d7148ea871",
+      "size_bytes": 5450,
+      "checksum": "sha256:cc2d860d10c1d1d4b78539407129890c104e76ff26a7aace8d21be09e794f661",
       "category": "shopping",
       "tags": [
         "shopping",
@@ -92,7 +92,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T09:19:49.819Z",
+      "updated_at": "2026-02-24T09:33:41.004Z",
       "i18n": {
         "zh-CN": {
           "name": "京东价格猎手",
@@ -109,8 +109,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/wechat-article-monitor",
-      "size_bytes": 5352,
-      "checksum": "sha256:a6c55e5c027c16d92cf14808c4781f3d657f6f4aaea7ed7416d89a45d7dad799",
+      "size_bytes": 5353,
+      "checksum": "sha256:87010458201ad42a137d4838b487d3b80d3044f642db2b784b75d8c6a29320d4",
       "category": "content",
       "tags": [
         "wechat",
@@ -124,7 +124,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T09:19:49.888Z",
+      "updated_at": "2026-02-24T09:33:41.004Z",
       "i18n": {
         "zh-CN": {
           "name": "微信文章监控",
@@ -141,8 +141,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/weibo-hot-tracker",
-      "size_bytes": 5302,
-      "checksum": "sha256:0ebc762f9ea2af2470ae647511b6d007d42df1256fc9b9a5bccb30543d4feb96",
+      "size_bytes": 5303,
+      "checksum": "sha256:255639e8848a25a0173ce09b47da53dfce9242a4da02d62096ed2111ce4b3450",
       "category": "social",
       "tags": [
         "weibo",
@@ -156,7 +156,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T09:19:49.910Z",
+      "updated_at": "2026-02-24T09:33:41.004Z",
       "i18n": {
         "zh-CN": {
           "name": "微博热点追踪",
