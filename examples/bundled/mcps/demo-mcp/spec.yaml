@@ -1,0 +1,12 @@
+{
+  "spec_version": "1",
+  "name": "Demo MCP",
+  "version": "0.1.0",
+  "author": "openkursar",
+  "description": "Bundled MCP example.",
+  "type": "mcp",
+  "mcp_server": {
+    "command": "node",
+    "args": ["index.js"]
+  }
+}

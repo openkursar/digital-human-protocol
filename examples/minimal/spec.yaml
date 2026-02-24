@@ -1,0 +1,27 @@
+{
+  "spec_version": "1",
+  "name": "Minimal Example",
+  "version": "0.1.0",
+  "author": "openkursar",
+  "description": "Minimal automation app example.",
+  "type": "automation",
+  "system_prompt": "You are a helpful automation assistant.",
+  "subscriptions": [
+    {
+      "source": {
+        "type": "schedule",
+        "config": {
+          "every": "24h"
+        }
+      }
+    }
+  ],
+  "store": {
+    "slug": "minimal-example",
+    "category": "other",
+    "tags": ["example"],
+    "locale": "en-US",
+    "min_app_version": "0.5.0",
+    "license": "MIT"
+  }
+}

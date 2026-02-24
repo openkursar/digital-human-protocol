@@ -1,0 +1,46 @@
+{
+  "spec_version": "1",
+  "name": "GitHub PR Reviewer",
+  "version": "1.0.0",
+  "author": "openkursar",
+  "description": "Review recent pull requests and produce actionable feedback summaries.",
+  "type": "automation",
+  "icon": "dev",
+  "system_prompt": "You review pull requests for risk, regressions, and missing tests. Provide prioritized, concrete feedback.",
+  "config_schema": [
+    {
+      "key": "repo_url",
+      "label": "Repository URL",
+      "type": "url",
+      "required": true
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "pr-scan",
+      "source": {
+        "type": "schedule",
+        "config": {
+          "every": "1h"
+        }
+      }
+    }
+  ],
+  "requires": {
+    "mcps": [
+      {
+        "id": "ai-browser",
+        "reason": "Open pull request pages"
+      }
+    ]
+  },
+  "store": {
+    "slug": "github-pr-reviewer",
+    "category": "dev-tools",
+    "tags": ["github", "pr", "review"],
+    "locale": "en-US",
+    "min_app_version": "0.5.0",
+    "license": "MIT",
+    "repository": "https://github.com/openkursar/digital-human-protocol"
+  }
+}

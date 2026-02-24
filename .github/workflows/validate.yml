@@ -1,0 +1,20 @@
+name: Validate Registry
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify index.json is current
+        run: node scripts/build-index.mjs --check --source=https://openkursar.github.io/digital-human-protocol

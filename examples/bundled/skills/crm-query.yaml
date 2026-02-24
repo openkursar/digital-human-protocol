@@ -1,0 +1,9 @@
+{
+  "spec_version": "1",
+  "name": "CRM Query Skill",
+  "version": "0.1.0",
+  "author": "openkursar",
+  "description": "Bundled skill example for CRM queries.",
+  "type": "skill",
+  "system_prompt": "You translate analyst requests into precise CRM query plans."
+}

@@ -1,0 +1,46 @@
+{
+  "spec_version": "1",
+  "name": "WeChat Article Monitor",
+  "version": "1.0.0",
+  "author": "openkursar",
+  "description": "Watch WeChat article updates and send digest notifications.",
+  "type": "automation",
+  "icon": "content",
+  "system_prompt": "You monitor subscribed article sources and produce concise update digests with direct links.",
+  "config_schema": [
+    {
+      "key": "feed_url",
+      "label": "Feed URL",
+      "type": "url",
+      "required": true
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "article-check",
+      "source": {
+        "type": "schedule",
+        "config": {
+          "every": "12h"
+        }
+      }
+    }
+  ],
+  "requires": {
+    "mcps": [
+      {
+        "id": "ai-browser",
+        "reason": "Open and parse article pages"
+      }
+    ]
+  },
+  "store": {
+    "slug": "wechat-article-monitor",
+    "category": "content",
+    "tags": ["wechat", "content", "monitor"],
+    "locale": "zh-CN",
+    "min_app_version": "0.5.0",
+    "license": "MIT",
+    "repository": "https://github.com/openkursar/digital-human-protocol"
+  }
+}

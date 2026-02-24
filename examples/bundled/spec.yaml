@@ -1,0 +1,43 @@
+{
+  "spec_version": "1",
+  "name": "Bundled CRM Analyst",
+  "version": "0.1.0",
+  "author": "openkursar",
+  "description": "Example bundle package with bundled skill and MCP.",
+  "type": "automation",
+  "system_prompt": "You are a CRM analyst with access to bundled connectors and analysis skill.",
+  "requires": {
+    "skills": [
+      {
+        "id": "crm-query",
+        "bundled": true,
+        "reason": "Domain-specific CRM query behavior"
+      }
+    ],
+    "mcps": [
+      {
+        "id": "demo-mcp",
+        "bundled": true,
+        "reason": "Bundled connector"
+      }
+    ]
+  },
+  "subscriptions": [
+    {
+      "source": {
+        "type": "schedule",
+        "config": {
+          "every": "6h"
+        }
+      }
+    }
+  ],
+  "store": {
+    "slug": "bundled-crm-analyst",
+    "category": "data",
+    "tags": ["example", "bundle"],
+    "locale": "en-US",
+    "min_app_version": "0.5.0",
+    "license": "MIT"
+  }
+}

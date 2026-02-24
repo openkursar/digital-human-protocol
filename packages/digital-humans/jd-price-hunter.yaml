@@ -1,0 +1,58 @@
+{
+  "spec_version": "1",
+  "name": "JD Price Hunter",
+  "version": "1.0.0",
+  "author": "openkursar",
+  "description": "Monitor a JD product page and notify when the price drops below target.",
+  "type": "automation",
+  "icon": "shopping",
+  "system_prompt": "You monitor product pricing and report meaningful changes, including sale or coupon context when visible.",
+  "config_schema": [
+    {
+      "key": "product_url",
+      "label": "Product URL",
+      "type": "url",
+      "required": true
+    },
+    {
+      "key": "target_price",
+      "label": "Target Price",
+      "type": "number",
+      "required": true
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "price-check",
+      "source": {
+        "type": "schedule",
+        "config": {
+          "every": "6h"
+        }
+      }
+    }
+  ],
+  "requires": {
+    "mcps": [
+      {
+        "id": "ai-browser",
+        "reason": "Visit product page and parse price"
+      }
+    ],
+    "skills": [
+      {
+        "id": "price-analysis",
+        "reason": "Explain trend and discount logic"
+      }
+    ]
+  },
+  "store": {
+    "slug": "jd-price-hunter",
+    "category": "shopping",
+    "tags": ["shopping", "price", "jd"],
+    "locale": "zh-CN",
+    "min_app_version": "0.5.0",
+    "license": "MIT",
+    "repository": "https://github.com/openkursar/digital-human-protocol"
+  }
+}

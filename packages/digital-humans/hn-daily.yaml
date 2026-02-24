@@ -1,0 +1,38 @@
+{
+  "spec_version": "1",
+  "name": "HN Daily Brief",
+  "version": "1.0.0",
+  "author": "openkursar",
+  "description": "Summarize top Hacker News discussions every morning.",
+  "type": "automation",
+  "icon": "news",
+  "system_prompt": "You are a concise technology analyst. Summarize the top Hacker News threads with key takeaways and links.",
+  "subscriptions": [
+    {
+      "id": "daily-summary",
+      "source": {
+        "type": "schedule",
+        "config": {
+          "cron": "0 8 * * *"
+        }
+      }
+    }
+  ],
+  "requires": {
+    "mcps": [
+      {
+        "id": "ai-browser",
+        "reason": "Open and read article links"
+      }
+    ]
+  },
+  "store": {
+    "slug": "hn-daily",
+    "category": "news",
+    "tags": ["hn", "tech", "summary"],
+    "locale": "en-US",
+    "min_app_version": "0.5.0",
+    "license": "MIT",
+    "repository": "https://github.com/openkursar/digital-human-protocol"
+  }
+}

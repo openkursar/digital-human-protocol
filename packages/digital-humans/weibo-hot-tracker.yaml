@@ -1,0 +1,38 @@
+{
+  "spec_version": "1",
+  "name": "Weibo Hot Tracker",
+  "version": "1.0.0",
+  "author": "openkursar",
+  "description": "Track Weibo hot topics and send short trend updates.",
+  "type": "automation",
+  "icon": "social",
+  "system_prompt": "You track Weibo hot topics and summarize trend shifts, sentiment, and recurring themes.",
+  "subscriptions": [
+    {
+      "id": "hot-topics",
+      "source": {
+        "type": "schedule",
+        "config": {
+          "every": "2h"
+        }
+      }
+    }
+  ],
+  "requires": {
+    "mcps": [
+      {
+        "id": "ai-browser",
+        "reason": "Read trending pages"
+      }
+    ]
+  },
+  "store": {
+    "slug": "weibo-hot-tracker",
+    "category": "social",
+    "tags": ["weibo", "trends", "social"],
+    "locale": "zh-CN",
+    "min_app_version": "0.5.0",
+    "license": "MIT",
+    "repository": "https://github.com/openkursar/digital-human-protocol"
+  }
+}

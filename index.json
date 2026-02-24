@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "generated_at": "2026-02-24T05:12:15.433Z",
+  "source": "https://openkursar.github.io/digital-human-protocol",
+  "apps": [
+    {
+      "slug": "github-pr-reviewer",
+      "name": "GitHub PR Reviewer",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Review recent pull requests and produce actionable feedback summaries.",
+      "type": "automation",
+      "format": "yaml",
+      "path": "packages/digital-humans/github-pr-reviewer.yaml",
+      "size_bytes": 1076,
+      "checksum": "sha256:151992b9e280805d64016a05e30287eb9b877a32b2c6dbbe337d600eb32b8c90",
+      "category": "dev-tools",
+      "tags": [
+        "github",
+        "pr",
+        "review"
+      ],
+      "icon": "dev",
+      "locale": "en-US",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T05:09:38.325Z"
+    },
+    {
+      "slug": "hn-daily",
+      "name": "HN Daily Brief",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Summarize top Hacker News discussions every morning.",
+      "type": "automation",
+      "format": "yaml",
+      "path": "packages/digital-humans/hn-daily.yaml",
+      "size_bytes": 914,
+      "checksum": "sha256:2faaed2571c7b512c75bee03f48bf886a6020f9283f9cccd5ee22ec911c22b8e",
+      "category": "news",
+      "tags": [
+        "hn",
+        "tech",
+        "summary"
+      ],
+      "icon": "news",
+      "locale": "en-US",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T05:09:10.035Z"
+    },
+    {
+      "slug": "jd-price-hunter",
+      "name": "JD Price Hunter",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Monitor a JD product page and notify when the price drops below target.",
+      "type": "automation",
+      "format": "yaml",
+      "path": "packages/digital-humans/jd-price-hunter.yaml",
+      "size_bytes": 1334,
+      "checksum": "sha256:f3b75b965592f63f6e85ba73139e4cd31eed16ad7d84affa4e744695774bb46e",
+      "category": "shopping",
+      "tags": [
+        "shopping",
+        "price",
+        "jd"
+      ],
+      "icon": "shopping",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "requires_skills": [
+        "price-analysis"
+      ],
+      "updated_at": "2026-02-24T05:09:20.140Z"
+    },
+    {
+      "slug": "wechat-article-monitor",
+      "name": "WeChat Article Monitor",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Watch WeChat article updates and send digest notifications.",
+      "type": "automation",
+      "format": "yaml",
+      "path": "packages/digital-humans/wechat-article-monitor.yaml",
+      "size_bytes": 1073,
+      "checksum": "sha256:8bcd305060f2dd5ff5476185a78d3f6c0dd4c6429a64d71776c38c63ae64e5e7",
+      "category": "content",
+      "tags": [
+        "wechat",
+        "content",
+        "monitor"
+      ],
+      "icon": "content",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T05:09:47.775Z"
+    },
+    {
+      "slug": "weibo-hot-tracker",
+      "name": "Weibo Hot Tracker",
+      "version": "1.0.0",
+      "author": "openkursar",
+      "description": "Track Weibo hot topics and send short trend updates.",
+      "type": "automation",
+      "format": "yaml",
+      "path": "packages/digital-humans/weibo-hot-tracker.yaml",
+      "size_bytes": 899,
+      "checksum": "sha256:b2cfeddb39c4fe61c9d26dd037766427bcf129e5a6fcb62c955034f9fe4fb333",
+      "category": "social",
+      "tags": [
+        "weibo",
+        "trends",
+        "social"
+      ],
+      "icon": "social",
+      "locale": "zh-CN",
+      "min_app_version": "0.5.0",
+      "requires_mcps": [
+        "ai-browser"
+      ],
+      "updated_at": "2026-02-24T05:09:29.096Z"
+    }
+  ]
+}
