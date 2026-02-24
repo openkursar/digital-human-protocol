@@ -2,9 +2,9 @@
 
 ## Add a New Digital Human
 
-1. Create `packages/digital-humans/<slug>.yaml`.
-2. Ensure the file is valid JSON-compatible YAML and includes required AppSpec fields.
-3. Set `store.slug` to match the filename slug.
+1. Create `packages/digital-humans/<slug>/spec.yaml`.
+2. Ensure `spec.yaml` is valid JSON-compatible YAML and includes required AppSpec fields.
+3. Set `store.slug` to match the bundle directory `<slug>`.
 4. Run:
 
 ```bash

@@ -1,10 +1,22 @@
 # Package Format
 
-## Phase 1
+## Canonical Package: Bundle
 
-A package is a single `.yaml` file that follows AppSpec and contains optional store metadata.
+A package is always a bundle directory.
 
-Required AppSpec fields:
+Minimum bundle shape:
+
+```text
+packages/<type>/<slug>/
+  spec.yaml
+```
+
+This minimum bundle is equivalent to the old single-file package model but keeps
+one canonical format for all future expansion.
+
+## AppSpec Requirements
+
+Required fields:
 
 - `name`
 - `version`
@@ -13,7 +25,7 @@ Required AppSpec fields:
 - `type`
 - `system_prompt` (for `type: automation`)
 
-Recommended store fields under `store`:
+Recommended `store` fields:
 
 - `slug`
 - `category`
@@ -22,6 +34,13 @@ Recommended store fields under `store`:
 - `min_app_version`
 - `license`
 
-## Future (Phase 2)
+## Extended Bundle (Future-safe)
 
-A package may be a folder bundle containing `spec.yaml` plus optional `skills/`, `mcps/`, and assets.
+Bundle may include optional directories:
+
+- `skills/`
+- `mcps/`
+- `assets/`
+- `README.md`
+
+The install entrypoint remains `spec.yaml`.

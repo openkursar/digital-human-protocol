@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-02-24T05:29:16.177Z",
+  "generated_at": "2026-02-24T06:42:53.080Z",
   "source": "https://openkursar.github.io/digital-human-protocol",
   "apps": [
     {
@@ -10,10 +10,10 @@
       "author": "openkursar",
       "description": "Review recent pull requests and produce actionable feedback summaries.",
       "type": "automation",
-      "format": "yaml",
-      "path": "packages/digital-humans/github-pr-reviewer.yaml",
+      "format": "bundle",
+      "path": "packages/digital-humans/github-pr-reviewer",
       "size_bytes": 1076,
-      "checksum": "sha256:151992b9e280805d64016a05e30287eb9b877a32b2c6dbbe337d600eb32b8c90",
+      "checksum": "sha256:26589b7f979efa4d78d57e26eff1cdc4afce42a6eeed1c51d06f0c579cd9f347",
       "category": "dev-tools",
       "tags": [
         "github",
@@ -26,7 +26,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T05:29:15.520Z"
+      "updated_at": "2026-02-24T06:42:31.636Z"
     },
     {
       "slug": "hn-daily",
@@ -35,10 +35,10 @@
       "author": "openkursar",
       "description": "Summarize top Hacker News discussions every morning.",
       "type": "automation",
-      "format": "yaml",
-      "path": "packages/digital-humans/hn-daily.yaml",
+      "format": "bundle",
+      "path": "packages/digital-humans/hn-daily",
       "size_bytes": 914,
-      "checksum": "sha256:2faaed2571c7b512c75bee03f48bf886a6020f9283f9cccd5ee22ec911c22b8e",
+      "checksum": "sha256:a8b24430397695feb8a2fe8f2643cbe8d19d1f6edf167c1ef361ae5cf3cd0d67",
       "category": "news",
       "tags": [
         "hn",
@@ -51,7 +51,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T05:29:15.520Z"
+      "updated_at": "2026-02-24T06:42:31.636Z"
     },
     {
       "slug": "jd-price-hunter",
@@ -60,10 +60,10 @@
       "author": "openkursar",
       "description": "Monitor a JD product page and notify when the price drops below target.",
       "type": "automation",
-      "format": "yaml",
-      "path": "packages/digital-humans/jd-price-hunter.yaml",
+      "format": "bundle",
+      "path": "packages/digital-humans/jd-price-hunter",
       "size_bytes": 1334,
-      "checksum": "sha256:f3b75b965592f63f6e85ba73139e4cd31eed16ad7d84affa4e744695774bb46e",
+      "checksum": "sha256:24f4a055ac67e4ce20b6537bf1fc86d6f2e501beafb25f3348c982b6ca252ef4",
       "category": "shopping",
       "tags": [
         "shopping",
@@ -79,7 +79,7 @@
       "requires_skills": [
         "price-analysis"
       ],
-      "updated_at": "2026-02-24T05:29:15.520Z"
+      "updated_at": "2026-02-24T06:42:31.636Z"
     },
     {
       "slug": "wechat-article-monitor",
@@ -88,10 +88,10 @@
       "author": "openkursar",
       "description": "Watch WeChat article updates and send digest notifications.",
       "type": "automation",
-      "format": "yaml",
-      "path": "packages/digital-humans/wechat-article-monitor.yaml",
+      "format": "bundle",
+      "path": "packages/digital-humans/wechat-article-monitor",
       "size_bytes": 1073,
-      "checksum": "sha256:8bcd305060f2dd5ff5476185a78d3f6c0dd4c6429a64d71776c38c63ae64e5e7",
+      "checksum": "sha256:0b79532f198fc14f09f1ca4a0051f273a05bb5c7648ef94e2fb4e38833affd1e",
       "category": "content",
       "tags": [
         "wechat",
@@ -104,7 +104,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T05:29:15.520Z"
+      "updated_at": "2026-02-24T06:42:31.636Z"
     },
     {
       "slug": "weibo-hot-tracker",
@@ -113,10 +113,10 @@
       "author": "openkursar",
       "description": "Track Weibo hot topics and send short trend updates.",
       "type": "automation",
-      "format": "yaml",
-      "path": "packages/digital-humans/weibo-hot-tracker.yaml",
+      "format": "bundle",
+      "path": "packages/digital-humans/weibo-hot-tracker",
       "size_bytes": 899,
-      "checksum": "sha256:b2cfeddb39c4fe61c9d26dd037766427bcf129e5a6fcb62c955034f9fe4fb333",
+      "checksum": "sha256:b6892ee8155f2db13f48c1bfb5be1184dc21b9f9e03b9bc827fb4bb66cd2308f",
       "category": "social",
       "tags": [
         "weibo",
@@ -129,7 +129,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T05:29:15.520Z"
+      "updated_at": "2026-02-24T06:42:31.636Z"
     }
   ]
 }
