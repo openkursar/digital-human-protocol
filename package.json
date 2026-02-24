@@ -1,0 +1,14 @@
+{
+  "name": "digital-human-protocol",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Registry build tooling for the Digital Human Protocol",
+  "scripts": {
+    "build": "node scripts/build-index.mjs",
+    "check": "node scripts/build-index.mjs --check"
+  },
+  "dependencies": {
+    "yaml": "^2.7.0"
+  }
+}

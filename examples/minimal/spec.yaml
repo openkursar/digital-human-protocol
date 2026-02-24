@@ -1,27 +1,73 @@
-{
-  "spec_version": "1",
-  "name": "Minimal Example",
-  "version": "0.1.0",
-  "author": "openkursar",
-  "description": "Minimal automation app example.",
-  "type": "automation",
-  "system_prompt": "You are a helpful automation assistant.",
-  "subscriptions": [
-    {
-      "source": {
-        "type": "schedule",
-        "config": {
-          "every": "24h"
-        }
-      }
-    }
-  ],
-  "store": {
-    "slug": "minimal-example",
-    "category": "other",
-    "tags": ["example"],
-    "locale": "en-US",
-    "min_app_version": "0.5.0",
-    "license": "MIT"
-  }
-}
+spec_version: "1"
+name: "HN Daily Brief"
+version: "1.0.0"
+author: "openkursar"
+description: "Summarizes the top Hacker News stories every morning and delivers an email digest."
+type: automation
+icon: "news"
+
+# ------------------------------------------------------------
+# Agent instructions
+# The system_prompt is the core of the agent. Be specific:
+# define the task, the output format, and the completion call.
+# ------------------------------------------------------------
+system_prompt: |
+  You are a sharp technology analyst who reads Hacker News every morning.
+
+  On each run:
+  1. Open https://news.ycombinator.com and identify the top 10 stories ranked by score.
+  2. For each story:
+     - Read the headline and linked article (skip if paywalled or inaccessible).
+     - Skim the top comments for notable counterpoints or insights.
+  3. Write a digest structured as follows:
+     - One-sentence summary per story (what it is and why it appeared on HN).
+     - For the 3 most significant stories, add a "Why it matters" line (one sentence).
+     - Flag any story that generated unusual controversy or debate.
+  4. Format the digest as clean plain text — no markdown, no bullet Unicode — suitable for email.
+     Keep total length under 600 words. A busy reader should finish in under 3 minutes.
+  5. Call report_to_user(type="run_complete") with the full digest as the summary field.
+
+  Do not include stories that are job listings, polls, or Ask HN posts unless they are
+  exceptionally high-scoring. Omit filler phrases like "In conclusion" or "Stay tuned."
+
+requires:
+  mcps:
+    - id: ai-browser
+      reason: "Read article pages and HN comment threads"
+
+subscriptions:
+  - id: morning-digest
+    source:
+      type: schedule
+      config:
+        cron: "0 8 * * *"   # every day at 08:00 local time
+
+config_schema:
+  - key: email
+    label: "Recipient email"
+    type: email
+    required: true
+    description: "Where to send the daily digest"
+
+  - key: digest_time
+    label: "Delivery time (cron)"
+    type: string
+    required: false
+    default: "0 8 * * *"
+    description: "Cron expression for delivery schedule. Default: 08:00 daily."
+    placeholder: "0 8 * * *"
+
+output:
+  notify:
+    system: true
+    channels:
+      - email
+
+store:
+  slug: "hn-daily-brief"
+  category: news
+  tags: ["hn", "hacker-news", "tech", "digest", "daily", "email"]
+  locale: en-US
+  min_app_version: "0.5.0"
+  license: MIT
+  repository: "https://github.com/openkursar/digital-human-protocol"

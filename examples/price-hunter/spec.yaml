@@ -1,0 +1,191 @@
+spec_version: "1"
+name: "Price Hunter"
+version: "1.2.0"
+author: "openkursar"
+description: "Monitors an e-commerce product page and notifies you when the price drops below your target."
+type: automation
+icon: "shopping"
+
+# ------------------------------------------------------------
+# This example demonstrates the full feature set of the
+# Digital Human Protocol:
+#   - config_schema (url, number, select, boolean inputs)
+#   - subscriptions with frequency control
+#   - filters (pre-run event filtering)
+#   - requires (MCP dependencies)
+#   - memory_schema (persistent state across runs)
+#   - output (multi-channel notifications)
+#   - escalation (human-in-the-loop decisions)
+#   - store metadata (registry publishing)
+# ------------------------------------------------------------
+
+system_prompt: |
+  You are a professional price-monitoring agent. Your job is to check a product page on every run,
+  determine the real current price, compare it against the user's target, and decide whether to act.
+
+  ## Setup (first run only)
+  If memory is empty, initialize it with:
+  - product_name: read from the page title
+  - baseline_price: the price you see on first visit
+  - lowest_ever: same as baseline_price
+  - run_count: 0
+  - last_alert_price: null
+
+  ## On every run
+  1. Open the product URL from userConfig.product_url.
+  2. Identify the real price the user would pay today. Check in this order:
+     - Flash sale or limited-time price
+     - Coupon or clippable discount (clip it mentally, note the final price)
+     - Membership / loyalty price (note if applicable)
+     - Listed price (fallback)
+     Record the source of the price you report (e.g. "coupon price", "sale price").
+
+  3. Compare against memory:
+     - If current price < lowest_ever: update lowest_ever.
+     - Calculate change_pct = ((current_price - baseline_price) / baseline_price) * 100.
+
+  4. Decide whether to alert:
+     - Alert condition: current_price <= userConfig.target_price
+       AND current_price != last_alert_price (avoid duplicate alerts).
+     - If userConfig.alert_on_any_drop is true, also alert if current_price < baseline_price
+       even when above target_price.
+
+  5. If alert condition is met:
+     - Call report_to_user(type="milestone") with:
+         summary: "Price dropped to {current_price} (target: {target_price}). Source: {price_source}."
+     - Update last_alert_price in memory.
+
+  6. Update memory: increment run_count, record current_price as last_seen_price.
+
+  7. Always end by calling report_to_user(type="run_complete") with a brief summary of what you found.
+     Include: current price, change from baseline (%), lowest ever seen.
+
+  ## When to escalate
+  Escalate to the user (report_to_user(type="escalation")) if:
+  - The product page returns an error or the product is no longer listed.
+  - The price is implausibly low (more than 80% below baseline) — possible data error.
+  - The page requires a login or CAPTCHA that cannot be bypassed.
+  Ask a clear yes/no question and explain what you observed.
+
+  ## Constraints
+  - Do not purchase anything. This agent observes only.
+  - Do not alert more than once per price level (use last_alert_price to deduplicate).
+  - If the page loads slowly, retry once before failing.
+
+requires:
+  mcps:
+    - id: ai-browser
+      reason: "Navigate the product page and extract current pricing, discounts, and availability"
+
+subscriptions:
+  - id: price-check
+    source:
+      type: schedule
+      config:
+        every: "6h"               # default: check every 6 hours
+    frequency:
+      default: "6h"
+      min: "1h"                   # users can increase frequency down to hourly
+      max: "24h"                  # or reduce to once per day
+    config_key: product_url       # passes the user's product URL as context for this trigger
+
+filters:
+  # Only proceed if a price value was detected in the event payload.
+  # For schedule triggers this is typically not needed, but guards against
+  # malformed webhook payloads if the trigger source is extended later.
+  - field: payload.type
+    op: neq
+    value: "error"
+
+config_schema:
+  - key: product_url
+    label: "Product page URL"
+    type: url
+    required: true
+    placeholder: "https://www.amazon.com/dp/..."
+    description: "The full URL of the product you want to monitor"
+
+  - key: target_price
+    label: "Target price"
+    type: number
+    required: true
+    description: "Notify me when the price drops to or below this amount"
+    placeholder: "49.99"
+
+  - key: currency
+    label: "Currency"
+    type: select
+    required: false
+    default: usd
+    options:
+      - label: "USD ($)"
+        value: usd
+      - label: "EUR (€)"
+        value: eur
+      - label: "GBP (£)"
+        value: gbp
+      - label: "CNY (¥)"
+        value: cny
+      - label: "JPY (¥)"
+        value: jpy
+
+  - key: alert_on_any_drop
+    label: "Alert on any price drop"
+    type: boolean
+    required: false
+    default: false
+    description: "Also notify when price drops below baseline, even if still above target"
+
+  - key: notes
+    label: "Notes for the agent"
+    type: text
+    required: false
+    placeholder: "e.g. Only count the Prime price, ignore third-party sellers"
+    description: "Optional instructions to pass to the agent (appended to its context)"
+
+memory_schema:
+  product_name:
+    type: string
+    description: "Product name as read from the page on first run"
+  baseline_price:
+    type: number
+    description: "Price observed on the very first run — used as the reference point"
+  lowest_ever:
+    type: number
+    description: "Lowest price ever observed across all runs"
+  last_seen_price:
+    type: number
+    description: "Price from the most recent run"
+  last_alert_price:
+    type: number
+    description: "Price at which the most recent alert was sent — prevents duplicate notifications"
+  run_count:
+    type: number
+    description: "Total number of completed runs"
+  price_history:
+    type: array
+    description: "Array of { timestamp, price, source } objects — last 30 entries"
+
+output:
+  notify:
+    system: true
+    channels:
+      - email
+      - wecom
+  format: "Price alert: {product_name} is now {current_price} (target: {target_price})"
+
+escalation:
+  enabled: true
+  timeout_hours: 48    # if the user doesn't respond in 48h, close as error
+
+permissions:
+  - ai-browser
+
+store:
+  slug: "price-hunter"
+  category: shopping
+  tags: ["price", "shopping", "alert", "e-commerce", "monitor"]
+  locale: en-US
+  min_app_version: "0.5.0"
+  license: MIT
+  repository: "https://github.com/openkursar/digital-human-protocol"

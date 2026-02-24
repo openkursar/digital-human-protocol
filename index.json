@@ -1,24 +1,26 @@
 {
   "version": 1,
-  "generated_at": "2026-02-24T06:44:17.123Z",
+  "generated_at": "2026-02-24T09:28:03.003Z",
   "source": "https://openkursar.github.io/digital-human-protocol",
   "apps": [
     {
       "slug": "github-pr-reviewer",
       "name": "GitHub PR Reviewer",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "author": "openkursar",
-      "description": "Review recent pull requests and produce actionable feedback summaries.",
+      "description": "Automatically reviews open pull requests and merges those that meet all quality criteria; flags the rest for human decision.",
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/github-pr-reviewer",
-      "size_bytes": 1076,
-      "checksum": "sha256:26589b7f979efa4d78d57e26eff1cdc4afce42a6eeed1c51d06f0c579cd9f347",
+      "size_bytes": 6157,
+      "checksum": "sha256:4a3b7c586bee317095a1f4c6f1bd9e06adc573889a7dc0705d60c227eab6f394",
       "category": "dev-tools",
       "tags": [
         "github",
         "pr",
-        "review"
+        "review",
+        "automation",
+        "merge"
       ],
       "icon": "dev",
       "locale": "en-US",
@@ -26,24 +28,31 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T06:44:14.259Z"
+      "updated_at": "2026-02-24T09:19:49.866Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "GitHub PR 审查员",
+          "description": "自动审查仓库中的开放 Pull Request，对符合条件的自动合并，其余标记为待人工决策。"
+        }
+      }
     },
     {
       "slug": "hn-daily",
       "name": "HN Daily Brief",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "author": "openkursar",
-      "description": "Summarize top Hacker News discussions every morning.",
+      "description": "Summarizes high-value Hacker News discussions every morning and delivers a deduped, actionable digest.",
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/hn-daily",
-      "size_bytes": 914,
-      "checksum": "sha256:a8b24430397695feb8a2fe8f2643cbe8d19d1f6edf167c1ef361ae5cf3cd0d67",
+      "size_bytes": 4547,
+      "checksum": "sha256:232149c712fb2096dd42f3f9e371d47e169db0d97a0182f5416f0a8fe819e7cc",
       "category": "news",
       "tags": [
         "hn",
         "tech",
-        "summary"
+        "summary",
+        "daily"
       ],
       "icon": "news",
       "locale": "en-US",
@@ -51,24 +60,31 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T06:44:14.260Z"
+      "updated_at": "2026-02-24T09:19:49.789Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "HN 每日简报",
+          "description": "每天早晨汇总 Hacker News 精选讨论，过滤重复内容，生成可读摘要推送给你。"
+        }
+      }
     },
     {
       "slug": "jd-price-hunter",
       "name": "JD Price Hunter",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "author": "openkursar",
-      "description": "Monitor a JD product page and notify when the price drops below target.",
+      "description": "Monitors a JD product page for price drops and promotions, notifies when the price hits the target, and avoids duplicate alerts.",
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/jd-price-hunter",
-      "size_bytes": 1334,
-      "checksum": "sha256:24f4a055ac67e4ce20b6537bf1fc86d6f2e501beafb25f3348c982b6ca252ef4",
+      "size_bytes": 5449,
+      "checksum": "sha256:49e099d48840e9fb3356639b9afb956ef075031969f47009878318d7148ea871",
       "category": "shopping",
       "tags": [
         "shopping",
         "price",
-        "jd"
+        "jd",
+        "alert"
       ],
       "icon": "shopping",
       "locale": "zh-CN",
@@ -76,27 +92,31 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "requires_skills": [
-        "price-analysis"
-      ],
-      "updated_at": "2026-02-24T06:44:14.260Z"
+      "updated_at": "2026-02-24T09:19:49.819Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "京东价格猎手",
+          "description": "监控京东商品页面的价格变动，在价格达到目标值或出现新低时发送通知，并避免重复提醒。"
+        }
+      }
     },
     {
       "slug": "wechat-article-monitor",
       "name": "WeChat Article Monitor",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "author": "openkursar",
-      "description": "Watch WeChat article updates and send digest notifications.",
+      "description": "Monitors WeChat article source pages for new publications and delivers a deduplicated digest of fresh content.",
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/wechat-article-monitor",
-      "size_bytes": 1073,
-      "checksum": "sha256:0b79532f198fc14f09f1ca4a0051f273a05bb5c7648ef94e2fb4e38833affd1e",
+      "size_bytes": 5352,
+      "checksum": "sha256:a6c55e5c027c16d92cf14808c4781f3d657f6f4aaea7ed7416d89a45d7dad799",
       "category": "content",
       "tags": [
         "wechat",
         "content",
-        "monitor"
+        "monitor",
+        "digest"
       ],
       "icon": "content",
       "locale": "zh-CN",
@@ -104,24 +124,31 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T06:44:14.260Z"
+      "updated_at": "2026-02-24T09:19:49.888Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "微信文章监控",
+          "description": "监控多个微信公众号来源页面的新文章发布，过滤重复内容，生成最新内容摘要推送。"
+        }
+      }
     },
     {
       "slug": "weibo-hot-tracker",
       "name": "Weibo Hot Tracker",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "author": "openkursar",
-      "description": "Track Weibo hot topics and send short trend updates.",
+      "description": "Tracks Weibo trending topics and reports meaningful rank changes — new entries, significant rises, and notable drops.",
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/weibo-hot-tracker",
-      "size_bytes": 899,
-      "checksum": "sha256:b6892ee8155f2db13f48c1bfb5be1184dc21b9f9e03b9bc827fb4bb66cd2308f",
+      "size_bytes": 5302,
+      "checksum": "sha256:0ebc762f9ea2af2470ae647511b6d007d42df1256fc9b9a5bccb30543d4feb96",
       "category": "social",
       "tags": [
         "weibo",
         "trends",
-        "social"
+        "social",
+        "monitoring"
       ],
       "icon": "social",
       "locale": "zh-CN",
@@ -129,7 +156,13 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T06:44:14.260Z"
+      "updated_at": "2026-02-24T09:19:49.910Z",
+      "i18n": {
+        "zh-CN": {
+          "name": "微博热点追踪",
+          "description": "追踪微博热搜榜单的排名变化，报告新上榜、显著上升和显著下降的热点话题。"
+        }
+      }
     }
   ]
 }

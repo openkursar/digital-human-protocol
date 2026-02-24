@@ -2,6 +2,7 @@
 
 DHP defines packaging and registry discovery for digital-human apps.
 
+- App spec reference: see `app-spec.md`
 - Package format: see `package-format.md`
 - Registry format: see `registry-protocol.md`
 - Categories: see `categories.md`

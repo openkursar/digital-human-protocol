@@ -3,6 +3,7 @@
 import { createHash } from "crypto";
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "fs";
 import { basename, join, relative, sep } from "path";
+import { parse as parseYaml } from "yaml";
 
 const DEFAULT_SOURCE = "https://openkursar.github.io/digital-human-protocol";
 const SLUG_REGEX = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
@@ -34,10 +35,10 @@ function parseArgs(argv) {
 
 function parseSpec(raw, relPath) {
   try {
-    return JSON.parse(raw);
+    return parseYaml(raw);
   } catch (error) {
     throw new Error(
-      `Failed to parse ${relPath} as JSON-compatible YAML: ${String(error)}`
+      `Failed to parse ${relPath} as YAML: ${String(error)}`
     );
   }
 }
@@ -61,6 +62,38 @@ function mapMcpDependencyIds(mcps) {
     .map((item) => (item && typeof item === "object" ? item.id : undefined))
     .filter((id) => typeof id === "string" && id.length > 0);
   return ids.length > 0 ? ids : undefined;
+}
+
+/**
+ * Extract the i18n summary for the registry index.
+ * Only name and description are included per locale — full config_schema
+ * overrides are available only in the complete spec.
+ *
+ * @param {Record<string, unknown> | undefined} i18nBlock - Raw i18n object from spec
+ * @returns {Record<string, { name?: string; description?: string }> | undefined}
+ */
+function extractI18nSummary(i18nBlock) {
+  if (!i18nBlock || typeof i18nBlock !== "object") return undefined;
+
+  const result = {};
+
+  for (const [locale, v] of Object.entries(i18nBlock)) {
+    if (!v || typeof v !== "object") continue;
+
+    const entry = {};
+    if (typeof v.name === "string" && v.name.length > 0) {
+      entry.name = v.name;
+    }
+    if (typeof v.description === "string" && v.description.length > 0) {
+      entry.description = v.description;
+    }
+
+    if (Object.keys(entry).length > 0) {
+      result[locale] = entry;
+    }
+  }
+
+  return Object.keys(result).length > 0 ? result : undefined;
 }
 
 function collectBundleFiles(bundleDir) {
@@ -187,6 +220,7 @@ function buildIndex(repoRoot, source) {
     }
 
     const bundleStats = computeBundleStats(bundleDir, repoRoot);
+    const i18n = extractI18nSummary(spec.i18n);
 
     const entry = {
       slug,
@@ -207,6 +241,7 @@ function buildIndex(repoRoot, source) {
       requires_mcps: mapMcpDependencyIds(spec.requires && spec.requires.mcps),
       requires_skills: mapSkillDependencyIds(spec.requires && spec.requires.skills),
       updated_at: bundleStats.updatedAt,
+      ...(i18n ? { i18n } : {}),
     };
 
     apps.push(entry);

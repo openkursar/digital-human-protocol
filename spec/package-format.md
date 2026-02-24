@@ -1,46 +1,87 @@
-# Package Format
+# DHP Package Format
 
-## Canonical Package: Bundle
+A **DHP** digital human package is always a **bundle** — a directory containing a `spec.yaml` and any
+optional supporting files.
 
-A package is always a bundle directory.
+## Bundle Structure
 
-Minimum bundle shape:
-
-```text
-packages/<type>/<slug>/
-  spec.yaml
+```
+packages/digital-humans/<slug>/
+  spec.yaml               # required — the agent definition
+  README.md               # optional — usage notes for this agent
+  assets/                 # optional — icons, images, static resources
+  skills/                 # optional — bundled skill definitions
+    <skill-name>.yaml
+  mcps/                   # optional — bundled MCP server definitions
+    <mcp-name>/
+      spec.yaml
+      <entrypoint>
 ```
 
-This minimum bundle is equivalent to the old single-file package model but keeps
-one canonical format for all future expansion.
+The install entrypoint is always `spec.yaml`. All other files are optional.
 
-## AppSpec Requirements
+## Required Fields in spec.yaml
 
-Required fields:
+Every spec must include:
 
-- `name`
-- `version`
-- `author`
-- `description`
-- `type`
-- `system_prompt` (for `type: automation`)
+| Field | Type | Notes |
+|---|---|---|
+| `name` | string | Non-empty display name |
+| `version` | string | e.g. `"1.0.0"` |
+| `author` | string | Author or organization |
+| `description` | string | One sentence |
+| `type` | string | `"automation"`, `"skill"`, `"mcp"`, or `"extension"` |
 
-Recommended `store` fields:
+Type-specific requirements:
 
-- `slug`
-- `category`
-- `tags`
-- `locale`
-- `min_app_version`
-- `license`
+| Type | Also requires |
+|---|---|
+| `automation` | `system_prompt`, at least one `subscriptions` entry |
+| `skill` | `system_prompt` |
+| `mcp` | `mcp_server` |
 
-## Extended Bundle (Future-safe)
+## Recommended store Fields
 
-Bundle may include optional directories:
+When publishing to a registry, include a `store` block:
 
-- `skills/`
-- `mcps/`
-- `assets/`
-- `README.md`
+```yaml
+store:
+  slug: "my-agent"           # must match the bundle directory name
+  category: productivity     # see spec/categories.md for allowed values
+  tags: ["tag1", "tag2"]
+  locale: en-US
+  min_app_version: "0.5.0"
+  license: MIT
+  repository: "https://github.com/..."
+```
 
-The install entrypoint remains `spec.yaml`.
+The `slug` field must match the directory name under `packages/digital-humans/`.
+
+## File Format
+
+`spec.yaml` must be valid YAML. JSON is also accepted (the parser handles both), but YAML is
+preferred for readability, especially for multi-line `system_prompt` values.
+
+## Bundled Skills and MCPs
+
+Skills and MCPs can be bundled inside the package instead of requiring separate installation.
+Set `bundled: true` in the corresponding `requires` entry:
+
+```yaml
+requires:
+  mcps:
+    - id: my-database-connector
+      bundled: true
+      reason: "Custom connector — no separate installation needed"
+  skills:
+    - id: my-analysis-skill
+      bundled: true
+```
+
+Bundled MCPs must have their own `spec.yaml` under `mcps/<id>/`.
+Bundled skills must have a YAML definition under `skills/<id>.yaml`.
+
+## Full Field Reference
+
+See [`spec/app-spec.md`](app-spec.md) for the complete list of all supported fields with types,
+constraints, and examples.
