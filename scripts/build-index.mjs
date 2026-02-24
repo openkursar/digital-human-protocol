@@ -222,6 +222,16 @@ function buildIndex(repoRoot, source) {
     const bundleStats = computeBundleStats(bundleDir, repoRoot);
     const i18n = extractI18nSummary(spec.i18n);
 
+    // Pass through store.meta as-is — an open extension container for
+    // implementation-specific data. The build script does not interpret
+    // the contents; it only ensures the value is a plain object.
+    const meta =
+      store.meta !== null &&
+      typeof store.meta === "object" &&
+      !Array.isArray(store.meta)
+        ? store.meta
+        : undefined;
+
     const entry = {
       slug,
       name: typeof spec.name === "string" ? spec.name : slug,
@@ -242,6 +252,7 @@ function buildIndex(repoRoot, source) {
       requires_skills: mapSkillDependencyIds(spec.requires && spec.requires.skills),
       updated_at: bundleStats.updatedAt,
       ...(i18n ? { i18n } : {}),
+      ...(meta ? { meta } : {}),
     };
 
     apps.push(entry);

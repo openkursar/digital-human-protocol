@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-02-24T11:56:31.673Z",
+  "generated_at": "2026-02-24T12:23:15.182Z",
   "source": "https://openkursar.github.io/digital-human-protocol",
   "apps": [
     {
@@ -12,8 +12,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/bilibili-comment-replier",
-      "size_bytes": 6345,
-      "checksum": "sha256:8eb20906d3b1ade60b7c667da794ec73657cc277142a846b349bf43d2b8df71e",
+      "size_bytes": 6365,
+      "checksum": "sha256:05381d30cc9519495f979599c0b381a53153d53cd1ef0991c05593971a040d9c",
       "category": "social",
       "tags": [
         "bilibili",
@@ -28,12 +28,15 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T10:22:30.020Z",
+      "updated_at": "2026-02-24T12:23:07.181Z",
       "i18n": {
         "zh-CN": {
           "name": "B站评论自动回复",
           "description": "监控指定B站视频的新评论，以创作者身份自动发送友好、有针对性的回复，并避免重复。"
         }
+      },
+      "meta": {
+        "rank": 2
       }
     },
     {
@@ -45,8 +48,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/boss-job-monitor",
-      "size_bytes": 6597,
-      "checksum": "sha256:0461f8681f0ebdbe80a5fef1b51d1c212e6d26c6bbd499e49a14d3b022cc65e9",
+      "size_bytes": 6617,
+      "checksum": "sha256:27ba124c56e976068fca44fef82a04ea649866999f44c8e3f7f8cf7607698ac6",
       "category": "productivity",
       "tags": [
         "jobs",
@@ -61,12 +64,15 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T10:41:26.313Z",
+      "updated_at": "2026-02-24T12:23:07.252Z",
       "i18n": {
         "zh-CN": {
           "name": "Boss直聘职位监控",
           "description": "每天自动在Boss直聘搜索符合条件的新职位，按匹配度排序后推送精选摘要，告别反复刷新。"
         }
+      },
+      "meta": {
+        "rank": 5
       }
     },
     {
@@ -275,8 +281,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/douyin-comment-replier",
-      "size_bytes": 6649,
-      "checksum": "sha256:76ca018e905875fdf38b267e2651aa9fb4958b549834381c9b822bd18aac9742",
+      "size_bytes": 6669,
+      "checksum": "sha256:fdf9374c64ad4ed1aa170e5e74079cd54ae1b3881e25be45062ba77e5fdbf248",
       "category": "social",
       "tags": [
         "douyin",
@@ -291,12 +297,15 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T10:41:26.271Z",
+      "updated_at": "2026-02-24T12:23:07.296Z",
       "i18n": {
         "zh-CN": {
           "name": "抖音评论自动回复",
           "description": "监控指定抖音视频的新评论，以创作者身份自动发送友好、有针对性的回复，并避免重复。"
         }
+      },
+      "meta": {
+        "rank": 7
       }
     },
     {
@@ -376,8 +385,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/github-pr-reviewer",
-      "size_bytes": 6158,
-      "checksum": "sha256:16daef18772b9bf29aa3c4301dc16b4a7d43167297ad24c84a22516ceb4c510d",
+      "size_bytes": 6178,
+      "checksum": "sha256:6353f9f1706569f6902c85160d9d1a51500b70661101d717e0c5510ed0a8d177",
       "category": "dev-tools",
       "tags": [
         "github",
@@ -392,16 +401,15 @@
       "requires_mcps": [
         "ai-browser"
       ],
-<<<<<<< HEAD
-      "updated_at": "2026-02-24T09:31:23.014Z",
-=======
-      "updated_at": "2026-02-24T09:33:41.004Z",
->>>>>>> da9b0be49b330fecf0bb33687198d984f06a3edd
+      "updated_at": "2026-02-24T12:23:07.229Z",
       "i18n": {
         "zh-CN": {
           "name": "GitHub PR 审查员",
           "description": "自动审查仓库中的开放 Pull Request，对符合条件的自动合并，其余标记为待人工决策。"
         }
+      },
+      "meta": {
+        "rank": 4
       }
     },
     {
@@ -428,11 +436,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-<<<<<<< HEAD
       "updated_at": "2026-02-24T09:31:30.341Z",
-=======
-      "updated_at": "2026-02-24T09:33:41.004Z",
->>>>>>> da9b0be49b330fecf0bb33687198d984f06a3edd
       "i18n": {
         "zh-CN": {
           "name": "HN 每日简报",
@@ -464,11 +468,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-<<<<<<< HEAD
       "updated_at": "2026-02-24T09:31:36.371Z",
-=======
-      "updated_at": "2026-02-24T09:33:41.004Z",
->>>>>>> da9b0be49b330fecf0bb33687198d984f06a3edd
       "i18n": {
         "zh-CN": {
           "name": "京东价格猎手",
@@ -549,8 +549,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/sentiment-monitor",
-      "size_bytes": 7288,
-      "checksum": "sha256:77556127e99332fbdfeab4af4c3e883fa35f43a1d369743f5af1f09396df44bd",
+      "size_bytes": 7308,
+      "checksum": "sha256:062a838540aae5025c24884a4106ca3b1932aa1ce48474041aa43f004bab041f",
       "category": "news",
       "tags": [
         "brand",
@@ -566,12 +566,15 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T11:32:41.164Z",
+      "updated_at": "2026-02-24T12:23:07.274Z",
       "i18n": {
         "zh-CN": {
           "name": "舆情监测官",
           "description": "每天扫描新闻和公开平台的品牌提及、竞品动态和政策变化，按风险等级分类推送，高风险内容立即升级提醒。"
         }
+      },
+      "meta": {
+        "rank": 6
       }
     },
     {
@@ -761,11 +764,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-<<<<<<< HEAD
       "updated_at": "2026-02-24T09:31:41.480Z",
-=======
-      "updated_at": "2026-02-24T09:33:41.004Z",
->>>>>>> da9b0be49b330fecf0bb33687198d984f06a3edd
       "i18n": {
         "zh-CN": {
           "name": "微信文章监控",
@@ -797,11 +796,7 @@
       "requires_mcps": [
         "ai-browser"
       ],
-<<<<<<< HEAD
       "updated_at": "2026-02-24T09:31:49.040Z",
-=======
-      "updated_at": "2026-02-24T09:33:41.004Z",
->>>>>>> da9b0be49b330fecf0bb33687198d984f06a3edd
       "i18n": {
         "zh-CN": {
           "name": "微博热点追踪",
@@ -884,8 +879,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/xiaohongshu-keyword-monitor",
-      "size_bytes": 6571,
-      "checksum": "sha256:e8d19b5fc88ae171aaf1c66589249cfea86767b05fc7d581a44ef6b18fbaea14",
+      "size_bytes": 6591,
+      "checksum": "sha256:c90a626f486448dc27ec39785d483f0fb21c2db101c1a76f9317224f174294a4",
       "category": "social",
       "tags": [
         "xiaohongshu",
@@ -900,12 +895,15 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T10:45:20.675Z",
+      "updated_at": "2026-02-24T12:22:06.881Z",
       "i18n": {
         "zh-CN": {
           "name": "小红书关键词监控",
           "description": "被动监控小红书上提及品牌、产品或指定关键词的新帖子，按点赞数筛选后推送摘要，全程不产生任何互动。"
         }
+      },
+      "meta": {
+        "rank": 1
       }
     },
     {
@@ -917,8 +915,8 @@
       "type": "automation",
       "format": "bundle",
       "path": "packages/digital-humans/zhihu-topic-monitor",
-      "size_bytes": 5419,
-      "checksum": "sha256:a9438a517246b0a2ade21e0714176e4e9630c28874eb9f264ad8c20b6ecf9148",
+      "size_bytes": 5439,
+      "checksum": "sha256:48485c85fe118bbf7e48bf761fbe739ef971139c0335ce803ee75448cec30dd0",
       "category": "content",
       "tags": [
         "zhihu",
@@ -933,12 +931,15 @@
       "requires_mcps": [
         "ai-browser"
       ],
-      "updated_at": "2026-02-24T10:45:20.635Z",
+      "updated_at": "2026-02-24T12:23:07.205Z",
       "i18n": {
         "zh-CN": {
           "name": "知乎话题监控",
           "description": "定期扫描指定知乎话题下的新提问和高赞回答，按质量筛选后推送精选内容摘要，帮你持续关注感兴趣的领域动态。"
         }
+      },
+      "meta": {
+        "rank": 3
       }
     }
   ]
