@@ -392,7 +392,11 @@
       "requires_mcps": [
         "ai-browser"
       ],
+<<<<<<< HEAD
       "updated_at": "2026-02-24T09:31:23.014Z",
+=======
+      "updated_at": "2026-02-24T09:33:41.004Z",
+>>>>>>> da9b0be49b330fecf0bb33687198d984f06a3edd
       "i18n": {
         "zh-CN": {
           "name": "GitHub PR 审查员",
@@ -424,7 +428,11 @@
       "requires_mcps": [
         "ai-browser"
       ],
+<<<<<<< HEAD
       "updated_at": "2026-02-24T09:31:30.341Z",
+=======
+      "updated_at": "2026-02-24T09:33:41.004Z",
+>>>>>>> da9b0be49b330fecf0bb33687198d984f06a3edd
       "i18n": {
         "zh-CN": {
           "name": "HN 每日简报",
@@ -456,7 +464,11 @@
       "requires_mcps": [
         "ai-browser"
       ],
+<<<<<<< HEAD
       "updated_at": "2026-02-24T09:31:36.371Z",
+=======
+      "updated_at": "2026-02-24T09:33:41.004Z",
+>>>>>>> da9b0be49b330fecf0bb33687198d984f06a3edd
       "i18n": {
         "zh-CN": {
           "name": "京东价格猎手",
@@ -749,7 +761,11 @@
       "requires_mcps": [
         "ai-browser"
       ],
+<<<<<<< HEAD
       "updated_at": "2026-02-24T09:31:41.480Z",
+=======
+      "updated_at": "2026-02-24T09:33:41.004Z",
+>>>>>>> da9b0be49b330fecf0bb33687198d984f06a3edd
       "i18n": {
         "zh-CN": {
           "name": "微信文章监控",
@@ -781,7 +797,11 @@
       "requires_mcps": [
         "ai-browser"
       ],
+<<<<<<< HEAD
       "updated_at": "2026-02-24T09:31:49.040Z",
+=======
+      "updated_at": "2026-02-24T09:33:41.004Z",
+>>>>>>> da9b0be49b330fecf0bb33687198d984f06a3edd
       "i18n": {
         "zh-CN": {
           "name": "微博热点追踪",
