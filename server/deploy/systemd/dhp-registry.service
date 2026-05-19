@@ -1,0 +1,16 @@
+[Unit]
+Description=DHP Registry Server
+After=network.target
+
+[Service]
+Type=simple
+User=dhp
+Group=dhp
+WorkingDirectory=/opt/dhp-registry
+ExecStart=/opt/dhp-registry/dhp-registry
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

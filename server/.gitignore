@@ -1,0 +1,12 @@
+# Binaries
+dhp-review
+dhp-review.exe
+dhp-registry
+dhp-registry.exe
+
+# Test artifacts
+test-*
+*.dhpkg
+
+# Runtime data
+halo-data/
